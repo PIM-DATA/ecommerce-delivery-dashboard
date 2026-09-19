@@ -1,3 +1,4 @@
 .DS_Store
 dashboard/template_v*.html
 dashboard/engine_v4.js
+.vercel

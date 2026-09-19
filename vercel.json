@@ -1,0 +1,4 @@
+{
+  "cleanUrls": true,
+  "redirects": [{ "source": "/", "destination": "/dashboard/index.html" }]
+}
