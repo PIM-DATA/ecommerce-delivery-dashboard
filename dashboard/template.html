@@ -1,0 +1,538 @@
+<title>Delivery Command Center 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap">
+<style>
+/* Deliberate single-theme design: a dark "command center". Every colour is painted explicitly. */
+:root{
+  color-scheme:dark;
+  --plane:#050b18; --plane-2:#08122a; --surface:rgba(10,22,48,.78); --surface-2:rgba(18,36,72,.7); --surface-3:rgba(28,52,96,.6);
+  --ink:#e6f1ff; --ink-2:#9fb3d1; --muted:#5f7396; --grid:rgba(90,140,220,.16); --axis:rgba(90,140,220,.35); --ring:rgba(56,189,248,.28); --glow:rgba(56,189,248,.18);
+  --cyan:#22d3ee; --cyan-soft:rgba(34,211,238,.18); --cyan-ink:#7ee8f7;
+  --green:#34d399; --green-soft:rgba(52,211,153,.18); --green-ink:#86efc9;
+  --orange:#fb923c; --orange-soft:rgba(251,146,60,.18); --orange-ink:#fdba74;
+  --violet:#a78bfa; --violet-soft:rgba(167,139,250,.18); --violet-ink:#c4b5fd;
+  --pink:#f472b6; --pink-soft:rgba(244,114,182,.18); --pink-ink:#f9a8d4;
+  --yellow:#facc15; --yellow-soft:rgba(250,204,21,.18); --yellow-ink:#fde68a;
+  --red:#fb7185; --red-soft:rgba(251,113,133,.2);
+  --seq1:#0e1f3f; --seq2:#123a66; --seq3:#155e8a; --seq4:#0e8aa8; --seq5:#17b6cc; --seq6:#5eead4;
+  --land:#101d3a; --land-edge:rgba(232,190,90,.30); --ocean:#071229; --gold:#f5c451; --gold-soft:rgba(245,196,81,.2);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--plane) radial-gradient(1200px 600px at 50% -10%,#0d1f48 0%,transparent 60%);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:13.5px;line-height:1.45}
+.hue-pink{--acc:var(--pink);--acc-soft:var(--pink-soft);--acc-ink:var(--pink-ink)}
+.hue-violet{--acc:var(--violet);--acc-soft:var(--violet-soft);--acc-ink:var(--violet-ink)}
+.hue-sky{--acc:var(--cyan);--acc-soft:var(--cyan-soft);--acc-ink:var(--cyan-ink)}
+.hue-orange{--acc:var(--orange);--acc-soft:var(--orange-soft);--acc-ink:var(--orange-ink)}
+.hue-teal{--acc:var(--green);--acc-soft:var(--green-soft);--acc-ink:var(--green-ink)}
+.hue-yellow{--acc:var(--yellow);--acc-soft:var(--yellow-soft);--acc-ink:var(--yellow-ink)}
+.hue-grey{--acc:#7d93b8;--acc-soft:rgba(125,147,184,.2);--acc-ink:#b7c6dd}
+
+.wrap{max-width:1500px;margin:0 auto;padding-inline:16px;padding-block:14px 48px}
+.hdr{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 24px;padding-bottom:10px}
+.hdr h1{font-family:Rajdhani,sans-serif;font-size:26px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0;line-height:1;color:#fff;text-shadow:0 0 18px rgba(56,189,248,.45)}
+.hdr .tag{font-size:12px;color:var(--cyan-ink);letter-spacing:.14em;text-transform:uppercase;font-family:Rajdhani,sans-serif;font-weight:600}
+.hdr .right{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sel{position:relative}
+.sel select{appearance:none;-webkit-appearance:none;font:inherit;font-size:12.5px;color:var(--ink);background:var(--surface-2);border:1px solid var(--ring);border-radius:6px;padding:6px 28px 6px 10px;cursor:pointer;min-width:140px}
+.sel select.on{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset,0 0 12px var(--glow)}
+.sel::after{content:"";position:absolute;right:10px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--cyan-ink);border-bottom:1.5px solid var(--cyan-ink);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+select:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 0 10px;font-size:12px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--cyan-soft);border:1px solid var(--ring);border-radius:999px;padding:2px 6px 2px 10px;font-size:12px;color:var(--ink)}
+.chip small{color:var(--cyan-ink)}
+.chip button{border:0;background:rgba(255,255,255,.1);color:var(--ink);width:18px;height:18px;border-radius:50%;cursor:pointer;font-size:12px;line-height:1;padding:0}
+.chip button:hover{background:var(--red-soft);color:#fff}
+.reset{background:none;border:0;color:var(--cyan-ink);font:inherit;font-size:12px;cursor:pointer;padding:3px 6px}
+
+.panel{position:relative;background:var(--surface);border:1px solid var(--ring);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.35) inset,0 0 24px -8px var(--glow);backdrop-filter:blur(6px);min-width:0}
+.panel::before,.panel::after{content:"";position:absolute;width:14px;height:14px;border-color:var(--cyan);border-style:solid;opacity:.8;pointer-events:none}
+.panel::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:8px 0 0 0}
+.panel::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 8px 0}
+.ph{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--grid);flex-wrap:wrap}
+.ph h2{font-family:Rajdhani,sans-serif;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0;color:var(--cyan-ink)}
+.ph .mini{margin-left:auto;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:11.5px;color:var(--muted)}
+.ph .mini b{color:var(--ink);font-weight:600;font-size:13px;margin-left:5px;font-variant-numeric:tabular-nums;font-family:Rajdhani,sans-serif;letter-spacing:.02em}
+.pb{padding:12px 14px}
+.hint{font-size:11px;color:var(--muted)}
+.tbtn{background:none;border:1px solid var(--grid);color:var(--ink-2);font:inherit;font-size:11px;cursor:pointer;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.tbtn:hover{border-color:var(--cyan);color:var(--cyan-ink)}
+
+.kstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:12px}
+.kt{padding:10px 14px 8px}
+.kt .l{font-family:Rajdhani,sans-serif;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.kt .row{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.kt .v{font-family:Rajdhani,sans-serif;font-size:30px;font-weight:700;line-height:1;color:var(--acc);text-shadow:0 0 14px var(--acc-soft);margin-top:4px}
+.kt .v small{font-size:13px;color:var(--ink-2);margin-left:3px;font-weight:600}
+.kt .spark{width:96px;height:34px;flex:none}
+.kt .d{font-size:11px;color:var(--muted);margin-top:4px}
+.kt .d.up{color:var(--green-ink)} .kt .d.down{color:var(--red)}
+
+.cmd{display:grid;grid-template-columns:1fr;gap:12px;align-items:stretch}
+.cmd>div{display:flex;flex-direction:column;gap:12px;min-width:0}
+.cmd .grow{flex:1;display:flex;flex-direction:column}.cmd .grow .pb{flex:1}
+.cmd .grow .pb:not(.flow){display:flex;flex-direction:column;justify-content:center}.cmd .grow .pb.flow{align-content:center}
+@media (min-width:1100px){.cmd{grid-template-columns:230px 1fr 300px}}
+.nav a{display:flex;align-items:center;gap:9px;color:var(--ink-2);text-decoration:none;font-size:12.5px;padding:7px 10px;border-radius:5px;border-left:2px solid transparent}
+.nav a:hover,.nav a.on{background:var(--cyan-soft);color:#fff;border-left-color:var(--cyan)}
+.nav a i{width:7px;height:7px;border-radius:50%;background:var(--dot);box-shadow:0 0 8px var(--dot);flex:none}
+.alerts{display:grid;gap:8px}
+.al{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:5px 9px;border-radius:6px;background:var(--surface-2);border:1px solid var(--grid);font-size:12px;cursor:pointer}
+.al:hover{border-color:var(--ring)}
+.al .ic{width:8px;height:8px;border-radius:2px;transform:rotate(45deg);background:var(--c);box-shadow:0 0 8px var(--c)}
+.al .t{color:var(--ink);line-height:1.3}.al .t small{display:block;color:var(--muted);font-size:11px}
+.al .n{font-family:Rajdhani,sans-serif;font-weight:700;font-size:16px;color:var(--c)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--ink-2);margin-top:8px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:-1px;margin-right:5px}
+.legend .ln{display:inline-block;width:18px;border-top:2px solid var(--c);vertical-align:3px;margin-right:5px;box-shadow:0 0 6px var(--c)}
+
+.map svg{width:100%;height:auto;display:block}
+.map .land{fill:var(--land);stroke:var(--land-edge);stroke-width:.5}
+.map .land.has{cursor:pointer}
+.map .land.has:hover{filter:brightness(1.25)}
+.map .land.sel{stroke:#fff;stroke-width:1.2}
+.map .land.off{opacity:.35}
+.map .arc{fill:none;stroke-linecap:round;opacity:.9;cursor:pointer}
+.map .arc-glow{fill:none;stroke-linecap:round;opacity:.3;filter:url(#glow);pointer-events:none}
+.map .pkt{pointer-events:none}
+.map .wh{fill:var(--gold);cursor:pointer}
+.map .wh-halo{fill:var(--gold);opacity:.22;filter:url(#glow);pointer-events:none}
+.map .wl{font-size:9px;fill:#f7e2a8;font-family:Rajdhani,sans-serif;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+.map .dest{fill:var(--cyan);pointer-events:none}
+.map .dest-halo{fill:var(--cyan);opacity:.18;filter:url(#glow);pointer-events:none}
+.map .dl{font-size:9px;fill:#bfe9f2;pointer-events:none}
+
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:stretch}
+.fs{position:relative;background:var(--surface-2);border:1px solid var(--grid);border-radius:8px;padding:16px 12px 14px;text-align:center}
+.fs .ic{width:52px;height:52px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:var(--acc-soft);box-shadow:0 0 16px var(--acc-soft)}
+.fs .ic svg{width:26px;height:26px;stroke:var(--acc);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fs .t{font-family:Rajdhani,sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px;color:var(--ink)}
+.fs .v{font-family:Rajdhani,sans-serif;font-size:28px;font-weight:700;color:var(--acc);line-height:1.1;margin-top:2px}
+.fs .v small{font-size:12px;color:var(--ink-2)}
+.fs .s{font-size:11px;color:var(--muted);margin-top:2px}
+.fs .pill{display:inline-block;margin-top:8px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-family:Rajdhani,sans-serif;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid var(--pc);color:var(--pc);background:color-mix(in srgb,var(--pc) 15%,transparent)}
+.fs::after{content:"›";position:absolute;right:-9px;top:50%;transform:translateY(-55%);color:var(--cyan);font-size:22px;opacity:.7}
+.fs:last-child::after{content:""}
+
+.sec{margin-top:12px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1200px){.grid.g4{grid-template-columns:repeat(4,1fr)}.grid.g3{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:1199px){.grid.g3>[style*='span 2']{grid-column:1/-1}}
+.card{min-width:0;border:1px solid var(--grid);border-radius:8px;padding:12px 14px 10px;background:var(--surface-2)}
+.card.full{grid-column:1/-1}
+.card-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
+.card h3{font-family:Rajdhani,sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0;color:var(--acc-ink,var(--ink))}
+.card h3 span{font-family:"IBM Plex Sans Thai",sans-serif;font-weight:400;color:var(--muted);font-size:11.5px;margin-left:6px;letter-spacing:0;text-transform:none}
+
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:inherit;fill:var(--ink-2);font-size:12.5px}
+svg .val{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;font-size:12.5px}
+svg .val.soft{fill:var(--ink-2);font-weight:500}
+svg .cat{fill:var(--ink)} svg .cat.off{fill:var(--muted)}
+svg .tick{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+svg .reflab{fill:var(--ink-2);font-size:10.5px;font-weight:500}
+svg .gl{stroke:var(--grid);stroke-width:1}
+svg .base{stroke:var(--axis);stroke-width:1}
+svg .ref{stroke:#fff;stroke-width:1.2;stroke-dasharray:4 3;opacity:.5}
+svg .bar{fill:var(--acc);cursor:pointer;filter:drop-shadow(0 0 4px var(--acc-soft))} svg .bar.dim{fill:var(--acc-soft);filter:none}
+svg .bar:hover{filter:brightness(1.2)}
+svg .rowhit{fill:transparent;cursor:pointer}
+svg .seg{cursor:pointer}
+table.tv{width:100%;border-collapse:collapse;font-size:12px}
+table.tv th,table.tv td{padding:5px 8px;border-bottom:1px solid var(--grid);text-align:right;font-variant-numeric:tabular-nums}
+table.tv th{color:var(--muted);font-weight:500;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
+table.tv th:first-child,table.tv td:first-child{text-align:left}
+.tscroll{overflow-x:auto}
+
+.donut{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.donut.stack{grid-template-columns:1fr;justify-items:center;gap:6px}.donut.stack svg{max-width:110px}.donut.stack .lg{width:100%}
+.routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:4px 18px;margin-top:10px}
+.routes .rt{display:grid;grid-template-columns:1fr 56px 44px;gap:8px;align-items:center;font-size:12px;padding:4px 6px;border-radius:4px;border-bottom:1px solid var(--grid)}
+.routes .rt .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.routes .rt .nm b{color:var(--green-ink);font-weight:600}.routes .rt .nm small{color:var(--muted)}
+.routes .rt .n{text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}.routes .rt .lr{text-align:right;font-family:Rajdhani,sans-serif;font-weight:700;font-size:14px}
+.donut .lg{display:grid;gap:4px;font-size:12px;min-width:0}
+.donut .lg div{display:flex;align-items:center;gap:7px;cursor:pointer;padding:2px 4px;border-radius:4px}
+.donut .lg div:hover{background:var(--surface-3)} .donut .lg div.sel{background:var(--surface-3);font-weight:600}
+.donut .lg i{width:8px;height:8px;border-radius:2px;flex:none;box-shadow:0 0 6px currentColor}
+.donut .lg .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.donut .lg small{color:var(--muted);font-variant-numeric:tabular-nums}
+.donut .lg b{font-weight:600;font-variant-numeric:tabular-nums;font-family:Rajdhani,sans-serif;font-size:13.5px}
+
+.heat{display:grid;gap:3px;font-size:12.5px}
+.heat .hc{display:flex;align-items:center;justify-content:center;border-radius:4px;min-height:40px;font-variant-numeric:tabular-nums;font-weight:600;cursor:pointer;border:1px solid transparent;font-family:Rajdhani,sans-serif;font-size:15px;color:#e6f1ff}
+.heat .hc.sel{border-color:#fff}
+.heat .hh{display:flex;align-items:flex-end;justify-content:center;color:var(--ink-2);font-size:11.5px;padding-bottom:5px;text-align:center;line-height:1.2}
+.heat .hr{display:flex;align-items:center;color:var(--ink);padding-right:10px;white-space:nowrap}
+.hscale{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+.hscale .sw{display:flex;gap:2px}.hscale .sw i{width:24px;height:9px;border-radius:2px;display:block}
+
+.flat{display:grid;gap:13px;margin-top:4px}
+.flat .fr{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:12px;font-size:12.5px}
+.flat .fr .rng{position:relative;height:8px;background:var(--surface-3);border-radius:4px}
+.flat .fr .rng i{position:absolute;top:0;height:8px;background:var(--acc);border-radius:4px}
+.flat .fr .rng b{position:absolute;top:-5px;width:2px;height:18px;background:#fff;opacity:.5}
+.flat .fr .rng em{position:absolute;top:12px;font-style:normal;font-size:10.5px;color:var(--muted);white-space:nowrap}
+.flat .axis{display:grid;grid-template-columns:96px 1fr;gap:12px;font-size:10.5px;color:var(--muted);margin-top:12px}
+.flat .axis div{display:flex;justify-content:space-between}
+
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.cmp .c{background:var(--surface-3);border-radius:6px;padding:8px 10px}
+.cmp .c .l{font-size:11.5px;color:var(--ink-2)}
+.cmp .c .v{font-family:Rajdhani,sans-serif;font-size:24px;font-weight:700;line-height:1.05;margin-top:2px;color:var(--green-ink)}
+.cmp .c.bad .v{color:var(--red)}
+.cmp .c .v small{font-size:12px;color:var(--muted);font-family:"IBM Plex Sans Thai",sans-serif}
+.cmp .c .b{height:6px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden}
+.cmp .c .b i{display:block;height:100%;background:var(--green);border-radius:3px;box-shadow:0 0 8px var(--green)}
+.cmp .c.bad .b i{background:var(--red);box-shadow:0 0 8px var(--red)}
+.cmp .c .r{font-size:11.5px;color:var(--muted);margin-top:5px}.cmp .c .r b{color:var(--ink)}
+
+.ranklist{display:grid;gap:2px}
+.ranklist .rr{display:grid;grid-template-columns:20px 1fr 50px 42px;align-items:center;gap:8px;font-size:12px;cursor:pointer;padding:3px 6px;border-radius:4px;position:relative;overflow:hidden}
+.ranklist .rr>*{position:relative}
+.ranklist .rr .bg{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--acc-soft),transparent);border-left:2px solid var(--acc);opacity:.9}
+.ranklist .rr:hover{background:var(--surface-3)} .ranklist .rr.sel{background:var(--acc-soft)} .ranklist .rr.off{opacity:.4}
+.ranklist .rr .i{color:var(--muted);font-size:10.5px;text-align:right}
+.ranklist .rr .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ranklist .rr .nm small{color:var(--muted);margin-left:4px}
+.ranklist .rr .n{text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ranklist .rr .lr{text-align:right;font-weight:700;font-family:Rajdhani,sans-serif;font-size:14px}
+.ranklist .rr .lr.hi{color:var(--red)} .ranklist .rr .lr.lo{color:var(--green-ink)}
+.ranklist .bar{grid-column:1/-1;height:3px;border-radius:2px;background:rgba(255,255,255,.06);margin-top:-2px}
+.ranklist .bar i{display:block;height:100%;border-radius:2px;background:var(--acc);box-shadow:0 0 6px var(--acc-soft)}
+.search{width:100%;font:inherit;font-size:12px;padding:6px 10px;border:1px solid var(--grid);border-radius:6px;background:var(--surface-3);color:var(--ink);margin-bottom:8px}
+
+.cal{display:grid;grid-template-columns:auto 1fr;gap:6px;align-items:start}
+.cal .dl{display:grid;grid-template-rows:repeat(7,11px);gap:2px;font-size:9.5px;color:var(--muted);padding-top:15px}
+.cal .dl span{line-height:11px}
+.cal .wk{display:grid;grid-template-rows:13px repeat(7,11px);grid-auto-flow:column;grid-auto-columns:11px;gap:2px}
+.cal .wk i{display:block;width:11px;height:11px;border-radius:2px;background:var(--surface-3)}
+.cal .wk .ml{font-size:9.5px;color:var(--muted);line-height:13px;white-space:nowrap;grid-row:1}
+.cal .wk .sp{background:transparent}
+
+.tip{position:fixed;pointer-events:none;background:#0b1730;border:1px solid var(--ring);color:var(--ink);font-size:12px;padding:6px 9px;border-radius:5px;z-index:20;line-height:1.4;transform:translate(-50%,calc(-100% - 10px));white-space:nowrap;box-shadow:0 0 16px var(--glow)}
+.tip b{font-weight:600;color:var(--cyan-ink)}
+.foot{margin-top:20px;font-size:11px;color:var(--muted);text-align:center}
+.foot a{color:var(--cyan-ink)}
+@media (max-width:560px){ .cmp{grid-template-columns:1fr} .donut{grid-template-columns:1fr} .flat .fr,.flat .axis{grid-template-columns:80px 1fr} .hdr .right{width:100%} .sel{flex:1 1 45%} .sel select{width:100%;min-width:0} }
+</style>
+
+<div class="wrap">
+  <div class="hdr">
+    <div><h1>Delivery Command Center</h1><div class="tag">E-commerce delivery · 50,000 orders · 2026</div></div>
+    <div class="right" id="filters"></div>
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div class="kstrip" id="kstrip"></div>
+
+  <div class="cmd">
+    <div>
+      <div class="panel"><div class="ph"><h2>Command Center</h2></div><div class="pb nav" style="display:grid;gap:2px">
+        <a href="#top" class="on" style="--dot:var(--cyan)"><i></i>ภาพรวมเครือข่าย</a>
+        <a href="#drivers" style="--dot:var(--violet)"><i></i>ตัวขับเคลื่อนการส่งช้า</a>
+        <a href="#heat" style="--dot:var(--cyan)"><i></i>อากาศ × วิธีส่ง</a>
+        <a href="#product" style="--dot:var(--orange)"><i></i>สินค้า & การคืน</a>
+        <a href="#geo" style="--dot:var(--pink)"><i></i>ประเทศ & เมือง</a>
+        <a href="#time" style="--dot:var(--green)"><i></i>วันและเดือน</a>
+        <a href="#impact" style="--dot:var(--violet)"><i></i>ผลกระทบต่อลูกค้า</a>
+      </div></div>
+      <div class="panel"><div class="ph"><h2>Risk Monitoring</h2><span class="mini hint">คลิกเพื่อกรอง</span></div><div class="pb alerts" id="alerts"></div></div>
+      <div class="panel grow"><div class="ph"><h2>Delivery Status</h2></div><div class="pb" id="status-b"></div></div>
+    </div>
+
+    <div>
+      <div class="panel map" id="top"><div class="ph"><h2>Global Delivery Network</h2><div class="mini" id="map-mini"></div></div><div class="pb" id="map-b"></div></div>
+      <div class="panel grow"><div class="ph"><h2>End-to-End Delivery Flow</h2><div class="mini" id="flow-mini"></div></div><div class="pb flow" id="flow-b"></div></div>
+    </div>
+
+    <div>
+      <div class="panel"><div class="ph"><h2>Late Rate Trend</h2><div class="mini" id="trend-mini"></div></div><div class="pb" id="trend-b"></div></div>
+      <div class="panel"><div class="ph"><h2>Transport Modes</h2></div><div class="pb" id="modes-b"></div></div>
+      <div class="panel grow"><div class="ph"><h2>Carrier Board</h2></div><div class="pb" id="carrier-b"></div></div>
+    </div>
+  </div>
+
+
+  <div class="panel sec hue-violet" id="drivers"><div class="ph"><h2>อะไรทำให้ส่งช้า</h2><div class="mini" id="dr-mini"></div></div><div class="pb grid g4" id="drivers-b"></div></div>
+  <div class="panel sec hue-sky" id="heat"><div class="ph"><h2>สภาพอากาศ × วิธีจัดส่ง</h2><div class="mini" id="ht-mini"></div></div><div class="pb" id="heat-b"></div></div>
+  <div class="panel sec hue-orange" id="product"><div class="ph"><h2>หมวดสินค้า & การคืน</h2><div class="mini" id="pd-mini"></div></div><div class="pb grid g4" id="product-b"></div></div>
+  <div class="panel sec hue-pink" id="geo"><div class="ph"><h2>ประเทศ & เมืองปลายทาง</h2><div class="mini" id="geo-mini"></div></div><div class="pb grid g3" id="geo-b"></div></div>
+  <div class="panel sec hue-teal" id="time"><div class="ph"><h2>วันและเดือน</h2><div class="mini" id="tm-mini"></div></div><div class="pb" id="time-b"></div></div>
+  <div class="panel sec hue-violet" id="impact"><div class="ph"><h2>ส่งช้าแล้วเกิดอะไรขึ้น</h2><div class="mini" id="im-mini"></div></div><div class="pb grid" id="impact-b"></div></div>
+
+  <div class="foot">Kaggle · datascikhan/e-commerce-delivery-and-shipping-data-2026 · Late = actual &gt; promised delivery days</div>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script id="world" type="application/json">__WORLD__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+/* ---------- decode ---------- */
+const RAW=JSON.parse(document.getElementById('data').textContent);
+const N=RAW.n, DIMS=RAW.dims;
+const b64=s=>{const b=atob(s),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;};
+const R={}; for(const k in RAW.u8) R[k]=b64(RAW.u8[k]); for(const k in RAW.u16) R[k]=new Uint16Array(b64(RAW.u16[k]).buffer);
+DIMS.month=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+DIMS.dow=['จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์','อาทิตย์'];
+const TH={method:'วิธีจัดส่ง',carrier:'ผู้ให้บริการขนส่ง',weather:'สภาพอากาศ',priority:'ลำดับความสำคัญ',dist:'ระยะทาง (กม.)',country:'ประเทศ',city:'เมือง',warehouse:'คลังสินค้า',category:'หมวดสินค้า',segment:'กลุ่มลูกค้า',package:'ขนาดพัสดุ',payment:'วิธีชำระเงิน',status:'สถานะการส่ง',month:'เดือน',dow:'วันในสัปดาห์',reason:'เหตุผลการคืน'};
+const HUE={weather:'violet',priority:'orange',method:'sky',carrier:'pink',dist:'teal',category:'orange',warehouse:'grey',segment:'grey',package:'grey',payment:'grey',month:'teal',dow:'teal',status:'pink'};
+const FILT={}; const tableOn={}; let otherDim='category'; let citySearch=''; const showAll={};
+const fmtPct=v=>(v*100).toFixed(1)+'%', fmtPct0=v=>Math.round(v*100)+'%', fmtN=v=>v.toLocaleString('en-US');
+const fmtK=v=>v>=1e6?'$'+(v/1e6).toFixed(2)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'K':'$'+v.toFixed(0);
+const anyFilter=()=>Object.keys(FILT).some(d=>FILT[d].size);
+function maskFor(exclude){ const m=new Uint8Array(N).fill(1); for(const d in FILT){ if(d===exclude||!FILT[d].size) continue; const col=R[d]; const ok=new Uint8Array(256); FILT[d].forEach(v=>ok[v]=1); for(let i=0;i<N;i++) if(!ok[col[i]]) m[i]=0; } return m; }
+function total(m){ const a={n:0,late:0,delay:0,rating:0,ret:0,rev:0,ship:0,proc:0,actual:0,promised:0}; for(let i=0;i<N;i++){ if(!m[i]) continue; a.n++;a.late+=R.late[i];a.delay+=R.delay[i];a.rating+=R.rating[i];a.ret+=R.ret[i];a.rev+=R.value[i];a.ship+=R.ship[i];a.proc+=R.proc[i];a.actual+=R.actual[i];a.promised+=R.promised[i]; } return a; }
+function groupBy(dim,m,k){ k=k||DIMS[dim].length; const col=R[dim]; const g=Array.from({length:k},(_,i)=>({i,name:DIMS[dim][i],n:0,late:0,delay:0,rating:0,ret:0,rev:0,ship:0,proc:0})); for(let i=0;i<N;i++){ if(!m[i]) continue; const o=g[col[i]]; if(!o) continue; o.n++;o.late+=R.late[i];o.delay+=R.delay[i];o.rating+=R.rating[i];o.ret+=R.ret[i];o.rev+=R.value[i];o.ship+=R.ship[i];o.proc+=R.proc[i]; } return g; }
+function toggle(dim,i){ FILT[dim]=FILT[dim]||new Set(); FILT[dim].has(i)?FILT[dim].delete(i):FILT[dim].add(i); renderAll(); }
+const isSel=(dim,i)=>!!(FILT[dim]&&FILT[dim].has(i)); const hasSel=dim=>!!(FILT[dim]&&FILT[dim].size>0);
+const ALL=new Uint8Array(N).fill(1); const BASE=total(ALL); const OVERALL_LATE=BASE.late/BASE.n;
+const spreadOf=items=>{const b=items.filter(x=>x.n>0).map(x=>x.late/x.n); return b.length?Math.max(...b)-Math.min(...b):0;};
+const sevColor=v=>v>=0.75?'var(--red)':v>=0.6?'var(--orange)':v>=0.45?'var(--yellow)':'var(--green)';
+const routeColor=v=>v>=0.75?'#f472b6':v>=0.6?'#a78bfa':v>=0.45?'#5aa9ff':'#22d3ee';
+const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- top ---------- */
+function renderTop(){
+  const el=document.getElementById('filters'); el.innerHTML='';
+  for(const d of ['weather','priority','method','carrier']){ const w=document.createElement('div'); w.className='sel'; const s=document.createElement('select'); s.id='f-'+d; const cur=hasSel(d)&&FILT[d].size===1?[...FILT[d]][0]:-1; s.className=hasSel(d)?'on':'';
+    s.innerHTML=`<option value="-1">${TH[d]}: ${hasSel(d)&&FILT[d].size>1?FILT[d].size+' ค่า':'ทั้งหมด'}</option>`+DIMS[d].map((v,i)=>`<option value="${i}" ${cur===i?'selected':''}>${v}</option>`).join('');
+    s.onchange=()=>{ FILT[d]=+s.value<0?new Set():new Set([+s.value]); renderAll(); }; w.appendChild(s); el.appendChild(w); }
+  const parts=[]; for(const d in FILT) FILT[d].forEach(i=>parts.push(`<span class="chip"><small>${TH[d]}</small>${DIMS[d][i]}<button type="button" data-rm="${d}:${i}" aria-label="ลบตัวกรอง">×</button></span>`));
+  const ch=document.getElementById('chips'); ch.innerHTML=parts.length?parts.join('')+`<button class="reset" type="button" id="f-reset">ล้างทั้งหมด</button>`:''; ch.hidden=!parts.length;
+}
+
+/* ---------- KPI strip ---------- */
+function spark(vals,color,lo,hi){ const w=96,h=34,p=3,n=vals.length; if(n<2) return ''; lo=lo??Math.min(...vals); hi=hi??Math.max(...vals); if(hi===lo){hi=lo+1;} const x=i=>p+i*(w-2*p)/(n-1), y=v=>h-p-(v-lo)/(hi-lo)*(h-2*p);
+  const d=vals.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path d="${d} L${x(n-1)},${h} L${x(0)},${h} Z" fill="${color}" opacity=".15"/><path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="${x(n-1)}" cy="${y(vals[n-1])}" r="2.5" fill="${color}"/></svg>`; }
+function renderKpis(m){
+  const a=total(m); const mo=groupBy('month',m,12); const has=mo.filter(x=>x.n);
+  const series=f=>has.map(f);
+  const last=has[has.length-1], prev=has[has.length-2];
+  const delta=(f,goodUp,unit='')=>{ if(!last||!prev) return '<div class="d">–</div>'; const v=f(last),p=f(prev); const dd=v-p; const good=goodUp?dd>=0:dd<=0; return `<div class="d ${good?'up':'down'}">${dd>=0?'▲':'▼'} ${Math.abs(dd).toFixed(unit==='%'||unit==='K'?1:unit===''&&Math.abs(dd)>=10?0:2)}${unit} เทียบ ${DIMS.month[prev.i]}</div>`; };
+  const tiles=[
+    {l:'On-time delivery',hue:'teal',v:a.n?fmtPct(1-a.late/a.n):'–',s:series(x=>1-x.late/x.n),c:'var(--green)',d:delta(x=>(1-x.late/x.n)*100,true,'%'),lo:0,hi:1},
+    {l:'Late delivery',hue:'pink',v:a.n?fmtPct(a.late/a.n):'–',s:series(x=>x.late/x.n),c:'var(--pink)',d:delta(x=>x.late/x.n*100,false,'%'),lo:0,hi:1},
+    {l:'Orders',hue:'sky',v:fmtN(a.n),s:series(x=>x.n),c:'var(--cyan)',d:delta(x=>x.n,true,'')},
+    {l:'Revenue',hue:'yellow',v:fmtK(a.rev),s:series(x=>x.rev),c:'var(--yellow)',d:delta(x=>x.rev/1000,true,'K')},
+    {l:'Customer rating',hue:'orange',v:a.n?(a.rating/a.n).toFixed(2)+'<small>/5</small>':'–',s:series(x=>x.rating/x.n),c:'var(--orange)',d:delta(x=>x.rating/x.n,true,''),lo:1,hi:5},
+    {l:'Return rate',hue:'violet',v:a.n?fmtPct(a.ret/a.n):'–',s:series(x=>x.ret/x.n),c:'var(--violet)',d:delta(x=>x.ret/x.n*100,false,'%')}];
+  document.getElementById('kstrip').innerHTML=tiles.map(t=>`<div class="panel kt hue-${t.hue}"><div class="l">${t.l}</div><div class="row"><div class="v">${t.v}</div>${spark(t.s,t.c,t.lo,t.hi)}</div>${t.d}</div>`).join('');
+}
+
+/* ---------- alerts ---------- */
+function renderAlerts(m){
+  const items=[]; const W=DIMS.weather,M=DIMS.method; const cell=Array.from({length:W.length*M.length},()=>({n:0,late:0})); for(let i=0;i<N;i++){ if(!m[i]) continue; const c=cell[R.weather[i]*M.length+R.method[i]]; c.n++; c.late+=R.late[i]; }
+  cell.forEach((c,k)=>{ if(c.n>=100){ const v=c.late/c.n; if(v>=0.85) items.push({v,n:c.n,t:`${W[Math.floor(k/M.length)]} × ${M[k%M.length]}`,s:'อากาศ × วิธีส่ง',click:`cell:${Math.floor(k/M.length)}:${k%M.length}`}); } });
+  for(const d of ['carrier','priority','country','category']){ groupBy(d,maskFor(d)).forEach(g=>{ if(g.n>=300){ const v=g.late/g.n; if(v>=OVERALL_LATE+0.08) items.push({v,n:g.n,t:g.name,s:TH[d],click:`${d}:${g.i}`}); } }); }
+  items.sort((a,b)=>b.v-a.v); const top=items.slice(0,5);
+  document.getElementById('alerts').innerHTML=top.length?top.map(it=>`<div class="al" style="--c:${sevColor(it.v)}" data-alert="${it.click}"><span class="ic"></span><span class="t">${it.t}<small>${it.s} · ${fmtN(it.n)} orders</small></span><span class="n">${fmtPct0(it.v)}</span></div>`).join('')+`<div class="legend"><span><i style="background:var(--red)"></i>≥75%</span><span><i style="background:var(--orange)"></i>60–75%</span><span><i style="background:var(--yellow)"></i>45–60%</span></div>`:'<div class="hint">ไม่มีจุดเสี่ยงเด่นในช่วงที่กรอง</div>';
+}
+
+/* ---------- donut ---------- */
+function donut(parts,tot,dim){ const R0=44,cx=55,cy=55,sw=16,C=2*Math.PI*R0; let off=0,s=`<svg viewBox="0 0 110 110" role="img">`;
+  for(const p of parts){ const f=tot?p.n/tot:0,len=f*C; if(len<=0) continue; const on=!hasSel(dim)||isSel(dim,p.i);
+    s+=`<circle class="seg" cx="${cx}" cy="${cy}" r="${R0}" fill="none" stroke="${p.c}" stroke-opacity="${on?1:.25}" stroke-width="${sw}" stroke-dasharray="${Math.max(len-2,0)} ${C-Math.max(len-2,0)}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})" data-tip="<b>${p.name}</b><br>${fmtN(p.n)} orders · ${fmtPct(f)}" data-click="${dim}:${p.i}"/>`; off+=len; }
+  const top=parts.reduce((a,b)=>b.n>a.n?b:a,parts[0]); s+=`<text x="${cx}" y="${cy-1}" text-anchor="middle" style="font-size:18px;font-weight:700;fill:#fff;font-family:Rajdhani">${tot?fmtPct0(top.n/tot):'–'}</text><text x="${cx}" y="${cy+13}" text-anchor="middle" class="tick" style="font-size:9px">${top.name}</text></svg>`; return s; }
+function renderStatus(m){
+  const st=groupBy('status',maskFor('status')); const cols=['var(--green)','var(--cyan)','var(--orange)','var(--red)']; st.forEach((p,i)=>p.c=cols[i]); const tot=st.reduce((x,p)=>x+p.n,0);
+  document.getElementById('status-b').innerHTML=`<div class="donut stack">${donut(st,tot,'status')}<div class="lg">${st.map(p=>`<div class="${isSel('status',p.i)?'sel':''}" data-click="status:${p.i}"><i style="background:${p.c};color:${p.c}"></i><span class="nm">${p.name}</span><small>${tot?fmtPct(p.n/tot):'–'}</small><b>${fmtN(p.n)}</b></div>`).join('')}</div></div>`;
+}
+
+/* ---------- map with flows ---------- */
+let GEO=null;
+function renderMap(m){
+  const C=groupBy('country',maskFor('country')); const byId={}; C.forEach(c=>{c.geo=RAW.geo.country[c.name]; byId[c.geo[0]]=c;}); const maxN=Math.max(...C.map(c=>c.n),1);
+  const wh=groupBy('warehouse',maskFor('warehouse'));
+  const K=DIMS.country.length; const fl=new Map(); for(let i=0;i<N;i++){ if(!m[i]) continue; const k=R.warehouse[i]*K+R.country[i]; let f=fl.get(k); if(!f){f={w:R.warehouse[i],c:R.country[i],n:0,late:0}; fl.set(k,f);} f.n++; f.late+=R.late[i]; }
+  const flows=[...fl.values()].sort((a,b)=>b.n-a.n); const perW={}; const shown=[]; for(const f of flows){ perW[f.w]=(perW[f.w]||0); if(perW[f.w]<3){ perW[f.w]++; shown.push(f);} } const maxF=Math.max(...shown.map(f=>f.n),1);
+  const a=total(m); document.getElementById('map-mini').innerHTML=`<span>คลัง<b>${wh.filter(w=>w.n).length}</b></span><span>ประเทศ<b>${C.filter(c=>c.n).length}</b></span><span>เส้นทางหลัก<b>${shown.length}</b></span><span>ส่งช้า<b>${a.n?fmtPct(a.late/a.n):'–'}</b></span>`;
+  let map='';
+  try{
+    if(!GEO){ const world=JSON.parse(document.getElementById('world').textContent); const feats=topojson.feature(world,world.objects.countries).features; const W=960,H=470; const proj=d3.geoNaturalEarth1().fitExtent([[4,4],[W-4,H-4]],{type:'Sphere'}); const path=d3.geoPath(proj); GEO={W,H,proj,sphere:path({type:'Sphere'}),feats:feats.map(f=>({id:+f.id,d:path(f)}))}; }
+    const {W,H,proj}=GEO; const selOn=hasSel('country');
+    map=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="แผนที่เครือข่ายการส่ง"><defs><radialGradient id="og" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#0b1a3a"/><stop offset="1" stop-color="#03070f"/></radialGradient><filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter></defs><path d="${GEO.sphere}" fill="url(#og)" stroke="rgba(232,190,90,.18)"/>`;
+    for(const f of GEO.feats){ const c=byId[f.id]; const v=c&&c.n?c.late/c.n:null;
+      map+=`<path class="land${c?' has':''}${c&&isSel('country',c.i)?' sel':''}${c&&selOn&&!isSel('country',c.i)?' off':''}" d="${f.d}" ${c&&v!=null?`style="fill:${v>=0.65?'#3a2657':v>=0.55?'#243a6e':'#165060'}"`:''} ${c?`data-tip="<b>${c.name}</b><br>ส่งช้า ${v!=null?fmtPct(v):'–'} · ${fmtN(c.n)} orders<br>คะแนน ${c.n?(c.rating/c.n).toFixed(2):'–'} · ยอดขาย ${fmtK(c.rev)}" data-click="country:${c.i}"`:''}/>`; }
+    let arcs='',glows='',pkts=''; let ai=0;
+    for(const f of shown){ const wg=RAW.geo.warehouse[DIMS.warehouse[f.w]]; const cg=RAW.geo.country[DIMS.country[f.c]]; const [x1,y1]=proj(wg),[x2,y2]=proj([cg[1],cg[2]]); const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy); if(L<6) continue; const mx=(x1+x2)/2,my=(y1+y2)/2; const cxp=mx-dy*0.22, cyp=my+dx*0.22; const v=f.late/f.n; const col=routeColor(v); const sw=(0.9+f.n/maxF*1.6).toFixed(1); const id='arc'+(ai++);
+      const d=`M${x1.toFixed(1)},${y1.toFixed(1)} Q${cxp.toFixed(1)},${cyp.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+      glows+=`<path class="arc-glow" d="${d}" stroke="${col}" stroke-width="${(sw*2.6).toFixed(1)}"/>`;
+      arcs+=`<path id="${id}" class="arc" d="${d}" stroke="${col}" stroke-width="${sw}" data-tip="<b>${DIMS.warehouse[f.w]} → ${DIMS.country[f.c]}</b><br>${fmtN(f.n)} orders · ส่งช้า ${fmtPct(v)}"/>`;
+      if(!reduceMotion) pkts+=`<circle class="pkt" r="${(1.6+f.n/maxF*1.4).toFixed(1)}" fill="#fff" opacity=".9"><animateMotion dur="${(3+L/120).toFixed(1)}s" begin="${(-(ai*0.7)%3).toFixed(1)}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle>`; }
+    map+=glows+arcs+pkts;
+    for(const c of C){ if(!c.n) continue; const [x,y]=proj([c.geo[1],c.geo[2]]); const r=2.5+Math.sqrt(c.n/maxN)*9; map+=`<circle class="dest-halo" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r*2.6).toFixed(1)}"/><circle class="dest" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" opacity=".85"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r*0.45).toFixed(1)}" fill="#fff" opacity=".9" pointer-events="none"/>`; if(c.n/maxN>0.12) map+=`<text class="dl" x="${(x+r+5).toFixed(1)}" y="${(y+3).toFixed(1)}">${c.name}</text>`; }
+    for(const w of wh){ const g=RAW.geo.warehouse[w.name]; const [x,y]=proj(g); const off=hasSel('warehouse')&&!isSel('warehouse',w.i);
+      map+=`<g opacity="${off?.35:1}"><circle class="wh-halo" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="14"/><circle class="wh" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.2" data-tip="<b>คลัง ${w.name}</b> (${fmtN(w.n)} orders)<br>ส่งช้า ${w.n?fmtPct(w.late/w.n):'–'} · เวลาในคลัง ${w.n?(w.proc/w.n/10).toFixed(1):'–'} ชม." data-click="warehouse:${w.i}"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.6" fill="#fff" pointer-events="none"/><text class="wl" x="${x.toFixed(1)}" y="${(y-9).toFixed(1)}" text-anchor="middle">${w.name}</text></g>`; }
+    map+='</svg>';
+  }catch(e){ map=`<div class="hint" style="padding:20px">แผนที่โหลดไม่ได้</div>`; }
+  document.getElementById('map-b').innerHTML=map+`<div class="legend"><span><i style="background:var(--gold);border-radius:50%;box-shadow:0 0 6px var(--gold)"></i>คลังสินค้า</span><span><i style="background:var(--cyan);border-radius:50%;box-shadow:0 0 6px var(--cyan)"></i>ประเทศปลายทาง (ขนาด = orders)</span><span><span class="ln" style="--c:#22d3ee"></span>เส้นทางหลัก ช้า &lt;45%</span><span><span class="ln" style="--c:#5aa9ff"></span>45–60%</span><span><span class="ln" style="--c:#a78bfa"></span>60–75%</span><span><span class="ln" style="--c:#f472b6"></span>≥75%</span><span class="hint">แสดง 3 ปลายทางหลักต่อคลัง · คลิกประเทศ/คลังเพื่อกรอง</span></div>
+    <div class="ph" style="padding:12px 0 4px;border:0;margin-top:6px"><h2>Top routes</h2><span class="mini">คลัง → ประเทศ · orders · ส่งช้า</span></div>
+    <div class="routes">${flows.slice(0,12).map(f=>`<div class="rt" data-tip="<b>${DIMS.warehouse[f.w]} → ${DIMS.country[f.c]}</b><br>${fmtN(f.n)} orders · ส่งช้า ${fmtPct(f.late/f.n)}"><span class="nm"><b>${DIMS.warehouse[f.w]}</b> <small>→</small> ${DIMS.country[f.c]}</span><span class="n">${fmtN(f.n)}</span><span class="lr" style="color:${sevColor(f.late/f.n)}">${fmtPct0(f.late/f.n)}</span></div>`).join('')}</div>`;
+}
+
+/* ---------- right column ---------- */
+function renderTrend(m){
+  const mo=groupBy('month',maskFor('month'),12); const W=280,H=120,pl=34,pr=8,pt=10,pb=22,pw=W-pl-pr,ph=H-pt-pb; const vals=mo.map(x=>x.n?x.late/x.n:null); const have=vals.filter(v=>v!==null); const lo=Math.max(0,Math.min(...have,OVERALL_LATE)-0.1), hi=Math.min(1,Math.max(...have,OVERALL_LATE)+0.1);
+  const x=i=>pl+i*pw/11, y=v=>pt+ph-(v-lo)/(hi-lo)*ph; let d='',first=true; vals.forEach((v,i)=>{ if(v===null) return; d+=(first?'M':'L')+x(i).toFixed(1)+','+y(v).toFixed(1); first=false; });
+  let s=`<svg viewBox="0 0 ${W} ${H}">`; for(const t of [lo,(lo+hi)/2,hi]) s+=`<line class="gl" x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}"/><text class="tick" x="${pl-6}" y="${y(t)+4}" text-anchor="end">${fmtPct0(t)}</text>`;
+  s+=`<line class="ref" x1="${pl}" x2="${W-pr}" y1="${y(OVERALL_LATE)}" y2="${y(OVERALL_LATE)}"/>`;
+  if(d){ s+=`<path d="${d} L${x(11)},${pt+ph} L${x(0)},${pt+ph} Z" fill="var(--pink)" opacity=".12"/><path d="${d}" fill="none" stroke="var(--pink)" stroke-width="2" style="filter:drop-shadow(0 0 4px var(--pink))"/>`; vals.forEach((v,i)=>{ if(v===null) return; s+=`<circle cx="${x(i)}" cy="${y(v)}" r="${isSel('month',i)?4:2.5}" fill="var(--pink)" stroke="#050b18" stroke-width="1"/><rect class="rowhit" x="${x(i)-pw/22}" y="${pt}" width="${pw/11}" height="${ph}" data-tip="<b>${DIMS.month[i]}</b><br>ส่งช้า ${fmtPct(v)} · ${fmtN(mo[i].n)} orders" data-click="month:${i}"/>`; }); }
+  mo.forEach((x0,i)=>{ if(i%2===0) s+=`<text class="tick" x="${x(i)}" y="${H-6}" text-anchor="middle">${DIMS.month[i]}</text>`; }); s+='</svg>';
+  const mx=have.length?Math.max(...have):0, mn=have.length?Math.min(...have):0;
+  document.getElementById('trend-mini').innerHTML=`<span>ช่วง<b>${fmtPct0(mn)}–${fmtPct0(mx)}</b></span>`;
+  document.getElementById('trend-b').innerHTML=s+`<div class="legend"><span><i style="background:var(--pink)"></i>Late rate รายเดือน</span><span><span class="ln" style="--c:#fff;opacity:.6"></span>ทั้งปี ${fmtPct(OVERALL_LATE)}</span><span class="hint">คลิกเดือนเพื่อกรอง</span></div>`;
+}
+function miniBars(dim,items,metric,hue){ const max=Math.max(...items.map(metric),0.0001); const selOn=hasSel(dim);
+  return `<div class="ranklist hue-${hue}">${items.map(it=>{const v=metric(it); return `<div class="rr${isSel(dim,it.i)?' sel':''}${selOn&&!isSel(dim,it.i)?' off':''}" style="grid-template-columns:1fr 54px 46px" data-click="${dim}:${it.i}" data-tip="<b>${it.name}</b><br>${fmtN(it.n)} orders · ส่งช้า ${it.n?fmtPct(it.late/it.n):'–'}"><span class="nm">${it.name}</span><span class="n">${fmtN(it.n)}</span><span class="lr ${it.n&&it.late/it.n>=OVERALL_LATE+.05?'hi':it.n&&it.late/it.n<=OVERALL_LATE-.05?'lo':''}">${it.n?fmtPct0(it.late/it.n):'–'}</span><div class="bar" style="grid-column:1/-1"><i style="width:${(v/max*100).toFixed(0)}%"></i></div></div>`;}).join('')}</div>`; }
+function renderRight(m){
+  const meth=groupBy('method',maskFor('method')); document.getElementById('modes-b').innerHTML=miniBars('method',meth,it=>it.n,'sky')+`<div class="hint" style="margin-top:6px">แท่ง = จำนวน orders · ตัวเลขขวา = ส่งช้า</div>`;
+  const car=groupBy('carrier',maskFor('carrier')).sort((a,b)=>(a.n?a.late/a.n:1)-(b.n?b.late/b.n:1)); document.getElementById('carrier-b').innerHTML=miniBars('carrier',car,it=>it.n?1-it.late/it.n:0,'teal')+`<div class="hint" style="margin-top:6px">เรียงจากตรงเวลามากสุด · แท่ง = อัตราตรงเวลา</div>`;
+}
+
+/* ---------- flow strip ---------- */
+function renderFlow(m){
+  const a=total(m); if(!a.n){ document.getElementById('flow-b').innerHTML='<div class="hint">ไม่มีข้อมูล</div>'; document.getElementById('flow-mini').innerHTML=''; return; }
+  const proc=a.proc/a.n/10, ontime=1-a.late/a.n, actual=a.actual/a.n, promised=a.promised/a.n, rating=a.rating/a.n, ret=a.ret/a.n;
+  const car=groupBy('carrier',m).filter(c=>c.n); const best=car.length?car.reduce((x,c)=>c.late/c.n<x.late/x.n?c:x):null;
+  const wh=groupBy('warehouse',m).filter(w=>w.n); const slow=wh.length?wh.reduce((x,w)=>w.proc/w.n>x.proc/x.n?w:x):null;
+  const pill=(ok,warn,good='Optimized',mid='Watch',bad='At risk')=>ok?`<span class="pill" style="--pc:var(--green)">${good}</span>`:warn?`<span class="pill" style="--pc:var(--yellow)">${mid}</span>`:`<span class="pill" style="--pc:var(--red)">${bad}</span>`;
+  const I={wh:'<path d="M3 21V9l9-5 9 5v12"/><path d="M7 21v-6h10v6M10 21v-3h4v3"/>',truck:'<path d="M1 7h13v9H1zM14 11h5l3 3v2h-8z"/><circle cx="5" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',plane:'<path d="M2 12l20-8-6 8 6 8-20-8z"/><path d="M8 12h8"/>',box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'};
+  const steps=[
+    {hue:'teal',ic:'wh',t:'Warehouse',v:proc.toFixed(1)+'<small> ชม.</small>',s:slow?`ช้าสุด ${slow.name} ${(slow.proc/slow.n/10).toFixed(1)} ชม.`:'',p:pill(proc<12,proc<18)},
+    {hue:'sky',ic:'truck',t:'Carrier',v:best?fmtPct0(1-best.late/best.n):'–',s:best?`ดีสุด ${best.name} (ตรงเวลา)`:'',p:pill(best&&1-best.late/best.n>0.55,best&&1-best.late/best.n>0.45)},
+    {hue:'violet',ic:'plane',t:'In transit',v:actual.toFixed(1)+'<small> วัน</small>',s:`สัญญา ${promised.toFixed(1)} วัน · เกิน ${(actual-promised).toFixed(1)}`,p:pill(actual-promised<0.5,actual-promised<1.2,'On plan','Slipping','Over promise')},
+    {hue:'yellow',ic:'box',t:'Delivered',v:fmtPct0(ontime)+'<small> ตรงเวลา</small>',s:`${fmtN(a.n-a.late)} จาก ${fmtN(a.n)} orders`,p:pill(ontime>0.6,ontime>0.45,'Healthy','Watch','Critical')},
+    {hue:'orange',ic:'user',t:'Customer',v:rating.toFixed(2)+'<small> ★</small>',s:`ขอคืน ${fmtPct(ret)}`,p:pill(rating>=3.8,rating>=3.3,'Satisfied','Mixed','Unhappy')}];
+  document.getElementById('flow-mini').innerHTML=`<span>เวลารวมเฉลี่ย<b>${(proc/24+actual).toFixed(1)} วัน</b></span>`;
+  document.getElementById('flow-b').innerHTML=steps.map(s=>`<div class="fs hue-${s.hue}"><div class="ic"><svg viewBox="0 0 24 24">${I[s.ic]}</svg></div><div class="t">${s.t}</div><div class="v">${s.v}</div><div class="s">${s.s}</div>${s.p}</div>`).join('');
+}
+
+/* ---------- bar chart ---------- */
+function barChart(dim,items,ref,o={}){
+  const id=o.id||dim, on=!!tableOn[id], rowH=o.rowH||32, labW=o.labW||120, valW=56, W=520, padT=18, padB=6, H=padT+items.length*rowH+padB, plotW=W-labW-valW-8, xs=v=>labW+v*plotW;
+  const metric=o.metric||(it=>it.n?it.late/it.n:0), fmt=o.fmt||fmtPct0, max=o.max||1; const vals=items.map(metric), maxV=Math.max(...vals); const selOn=hasSel(dim);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${TH[dim]}">`;
+  items.forEach((it,i)=>{ const y=padT+i*rowH+6,bh=rowH-12,v=vals[i],w=Math.max(0,v/max*plotW),r=Math.min(4,bh/2); const sel=isSel(dim,it.i); const strong=selOn?sel:(it.n&&v===maxV);
+    const path=w>r?`M${xs(0)},${y} H${xs(0)+w-r} a${r},${r} 0 0 1 ${r},${r} V${y+bh-r} a${r},${r} 0 0 1 -${r},${r} H${xs(0)} Z`:`M${xs(0)},${y} h${w} v${bh} h-${w} Z`;
+    const tipS=`<b>${it.name}</b><br>ส่งช้า ${it.n?fmtPct(it.late/it.n):'–'} · ${fmtN(it.n)} orders<br>คะแนน ${it.n?(it.rating/it.n).toFixed(2):'–'} · คืน ${it.n?fmtPct(it.ret/it.n):'–'}`;
+    svg+=`<text class="cat${selOn&&!sel?' off':''}" x="${labW-10}" y="${y+bh/2+4.5}" text-anchor="end">${it.name}</text><rect class="rowhit" x="0" y="${y-6}" width="${W}" height="${rowH}" data-tip="${tipS}" data-click="${dim}:${it.i}"/><path class="bar${strong?'':' dim'}" d="${path}" data-tip="${tipS}" data-click="${dim}:${it.i}"/><text class="val${strong?'':' soft'}" x="${xs(0)+w+8}" y="${y+bh/2+4.5}">${it.n?fmt(v):'–'}</text>`; });
+  svg+=`<line class="base" x1="${xs(0)}" x2="${xs(0)}" y1="${padT}" y2="${H-padB}"/>`;
+  if(ref!=null) svg+=`<line class="ref" x1="${xs(ref/max)}" x2="${xs(ref/max)}" y1="${padT-4}" y2="${H-padB}"/><text class="reflab" x="${xs(ref/max)}" y="${padT-8}" text-anchor="middle">เฉลี่ย ${fmt(ref)}</text>`;
+  svg+='</svg>';
+  const table=`<div class="tscroll"><table class="tv"><thead><tr><th>${TH[dim]}</th><th>Orders</th><th>ส่งช้า</th><th>ช้าเฉลี่ย</th><th>คะแนน</th><th>คืน</th><th>ยอดขาย</th></tr></thead><tbody>${items.map(it=>`<tr><td>${it.name}</td><td>${fmtN(it.n)}</td><td>${it.n?fmtPct(it.late/it.n):'–'}</td><td>${it.n?(it.delay/it.n).toFixed(2):'–'}</td><td>${it.n?(it.rating/it.n).toFixed(2):'–'}</td><td>${it.n?fmtPct(it.ret/it.n):'–'}</td><td>${fmtK(it.rev)}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="card hue-${o.hue||HUE[dim]||'sky'}${o.full?' full':''}"><div class="card-h"><h3>${o.title||TH[dim]}${o.sub?`<span>${o.sub}</span>`:''}</h3><button class="tbtn" type="button" data-toggle="${id}">${on?'กราฟ':'ตาราง'}</button></div>${on?table:svg}</div>`;
+}
+function renderDrivers(m){
+  const a=total(m); const ref=a.n?a.late/a.n:0; const groups={}; ['weather','priority','method','carrier','dist'].forEach(d=>groups[d]=groupBy(d,maskFor(d)));
+  const order=Object.keys(groups).sort((x,y)=>spreadOf(groups[y])-spreadOf(groups[x]));
+  document.getElementById('dr-mini').innerHTML=order.slice(0,3).map(d=>`<span>${TH[d]}<b>${Math.round(spreadOf(groups[d])*100)} จุด</b></span>`).join('');
+  const cards=order.map(d=>{ let items=groups[d]; if(d==='carrier') items=items.slice().sort((x,y)=>(y.n?y.late/y.n:0)-(x.n?x.late/x.n:0)); return barChart(d,items,ref,{labW:d==='carrier'?140:118,sub:`ห่าง ${Math.round(spreadOf(groups[d])*100)} จุด`,rowH:d==='carrier'?28:34}); });
+  const others=['category','warehouse','segment','package','payment']; const og={}; others.forEach(d=>og[d]=groupBy(d,maskFor(d)));
+  const lo=0.4,hi=0.75,pos=v=>(Math.max(0,Math.min(1,(v-lo)/(hi-lo)))*100).toFixed(1)+'%';
+  const flat=`<div class="flat">${others.map(d=>{const g=og[d].filter(x=>x.n>0); if(!g.length) return ''; const rates=g.map(x=>x.late/x.n); const mn=Math.min(...rates),mx=Math.max(...rates); const mnl=g[rates.indexOf(mn)].name,mxl=g[rates.indexOf(mx)].name;
+    return `<div class="fr"><span>${TH[d]}</span><div class="rng" data-tip="<b>${TH[d]}</b><br>ต่ำสุด ${mnl} ${fmtPct(mn)}<br>สูงสุด ${mxl} ${fmtPct(mx)}"><i style="left:${pos(mn)};width:calc(${pos(mx)} - ${pos(mn)})"></i><b style="left:${pos(ref)}"></b><em style="left:calc(${pos(mx)} + 8px)">${fmtPct0(mn)}–${fmtPct0(mx)}</em></div></div>`;}).join('')}<div class="axis"><span></span><div><span>${fmtPct0(lo)}</span><span>เฉลี่ย ${fmtPct(ref)}</span><span>${fmtPct0(hi)}</span></div></div></div>`;
+  const maxSp=Math.max(...others.map(d=>spreadOf(og[d])));
+  cards.push(`<div class="card hue-grey"><div class="card-h"><h3>มิติอื่น ๆ<span>${maxSp<0.05?'แทบไม่ต่างกัน':'มีความต่างเมื่อกรอง'}</span></h3><select class="tbtn" id="otherDim">${others.map(d=>`<option value="${d}" ${otherDim===d?'selected':''}>${TH[d]}</option>`).join('')}</select></div>${flat}</div>`);
+  cards.push(barChart(otherDim,og[otherDim].slice().sort((x,y)=>(y.n?y.late/y.n:0)-(x.n?x.late/x.n:0)),ref,{hue:'grey',rowH:26,labW:150,sub:'คลิกเพื่อกรอง'}));
+  const pr=groups.priority; const maxH=Math.max(...pr.map(x=>x.n?x.proc/x.n/10:0),1)*1.15;
+  cards.push(barChart('priority',pr,null,{id:'prio-proc',title:'เวลาในคลัง (ชม.)',sub:'Low priority ค้างนานสุด — สัญญาลูกค้าเท่ากัน',hue:'orange',rowH:34,labW:118,metric:it=>it.n?it.proc/it.n/10:0,fmt:v=>v.toFixed(1)+' ชม.',max:maxH}));
+  document.getElementById('drivers-b').innerHTML=cards.join('');
+}
+function renderHeat(m){
+  const on=!!tableOn.heat; const W=DIMS.weather,M=DIMS.method; const cell=Array.from({length:W.length*M.length},()=>({n:0,late:0})); for(let i=0;i<N;i++){ if(!m[i]) continue; const c=cell[R.weather[i]*M.length+R.method[i]]; c.n++; c.late+=R.late[i]; }
+  const steps=['var(--seq1)','var(--seq2)','var(--seq3)','var(--seq4)','var(--seq5)','var(--seq6)']; const col=v=>steps[Math.min(5,Math.floor(v*6))];
+  let worst=null,best=null; cell.forEach((c,k)=>{ if(c.n<30) return; const v=c.late/c.n; if(!worst||v>worst.v) worst={k,v}; if(!best||v<best.v) best={k,v}; }); const name=k=>`${W[Math.floor(k/M.length)]} · ${M[k%M.length]}`;
+  document.getElementById('ht-mini').innerHTML=(worst?`<span>แย่สุด<b>${name(worst.k)} ${fmtPct0(worst.v)}</b></span>`:'')+(best?`<span>ดีสุด<b>${name(best.k)} ${fmtPct0(best.v)}</b></span>`:'');
+  let html=`<div class="card-h"><span class="hint">คลิกช่องเพื่อกรองทั้งอากาศและวิธีส่ง</span><button class="tbtn" type="button" data-toggle="heat">${on?'กราฟ':'ตาราง'}</button></div>`;
+  if(on) html+=`<div class="tscroll"><table class="tv"><thead><tr><th>สภาพอากาศ</th>${M.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${W.map((w,i)=>`<tr><td>${w}</td>${M.map((x,j)=>{const c=cell[i*M.length+j];return `<td>${c.n?fmtPct(c.late/c.n)+' ('+fmtN(c.n)+')':'–'}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
+  else{ html+=`<div class="tscroll"><div class="heat" style="grid-template-columns:120px repeat(${M.length},minmax(80px,1fr));min-width:${120+M.length*84}px"><div></div>${M.map(x=>`<div class="hh">${x}</div>`).join('')}`;
+    W.forEach((w,i)=>{ html+=`<div class="hr">${w}</div>`; M.forEach((x,j)=>{ const c=cell[i*M.length+j]; if(!c.n){html+=`<div class="hc" style="background:var(--surface-3);color:var(--muted)">–</div>`;return;} const v=c.late/c.n; const sel=isSel('weather',i)&&isSel('method',j)&&FILT.weather.size===1&&FILT.method.size===1; html+=`<div class="hc${sel?' sel':''}" style="background:${col(v)}" data-tip="<b>${w} · ${x}</b><br>ส่งช้า ${fmtPct(v)} · ${fmtN(c.n)} orders" data-cell="${i}:${j}">${fmtPct0(v)}</div>`; }); });
+    html+=`</div></div><div class="hscale">0%<span class="sw">${steps.map(s=>`<i style="background:${s}"></i>`).join('')}</span>100%</div>`; }
+  document.getElementById('heat-b').innerHTML=html;
+}
+function renderProduct(m){
+  const cat=groupBy('category',maskFor('category')); const a=total(m);
+  const byLate=cat.slice().sort((x,y)=>(y.n?y.late/y.n:0)-(x.n?x.late/x.n:0)), byRet=cat.slice().sort((x,y)=>(y.n?y.ret/y.n:0)-(x.n?x.ret/x.n:0)), byRev=cat.slice().sort((x,y)=>y.rev-x.rev);
+  document.getElementById('pd-mini').innerHTML=`<span>ยอดขายสูงสุด<b>${byRev[0].name} ${fmtK(byRev[0].rev)}</b></span><span>คืนมากสุด<b>${byRet[0].name} ${byRet[0].n?fmtPct0(byRet[0].ret/byRet[0].n):'–'}</b></span>`;
+  const rs=Array.from({length:DIMS.reason.length},(_,i)=>({i,name:DIMS.reason[i],n:0,late:0})); for(let i=0;i<N;i++){ if(!m[i]||!R.ret[i]) continue; const o=rs[R.reason[i]]; if(o){o.n++;o.late+=R.late[i];} }
+  const rsTot=rs.reduce((x,p)=>x+p.n,0), rsSorted=rs.slice().sort((x,y)=>y.n-x.n); const cols=['var(--pink)','var(--violet)','var(--cyan)','var(--orange)','var(--green)','var(--yellow)']; rsSorted.forEach((p,k)=>p.c=cols[k]); const lateRet=rs.reduce((x,p)=>x+p.late,0);
+  document.getElementById('product-b').innerHTML=
+    barChart('category',byRev,null,{title:'ยอดขายตามหมวด',sub:'คลิกเพื่อกรอง',rowH:26,labW:150,metric:it=>it.rev,fmt:v=>fmtK(v),max:Math.max(...byRev.map(x=>x.rev),1)*1.15,hue:'yellow',id:'catrev'})+
+    barChart('category',byLate,a.n?a.late/a.n:0,{title:'ส่งช้าตามหมวด',rowH:26,labW:150,hue:'violet',id:'catlate'})+
+    barChart('category',byRet,a.n?a.ret/a.n:0,{title:'ขอคืนตามหมวด',rowH:26,labW:150,metric:it=>it.n?it.ret/it.n:0,max:0.3,hue:'pink',id:'catret'})+
+    `<div class="card hue-orange"><div class="card-h"><h3>เหตุผลการคืน<span>${fmtN(rsTot)} คำขอ</span></h3><span class="hint">คลิกเพื่อกรอง</span></div><div class="donut">${donut(rsSorted,rsTot,'reason')}<div class="lg">${rsSorted.map(p=>`<div class="${isSel('reason',p.i)?'sel':''}" data-click="reason:${p.i}"><i style="background:${p.c};color:${p.c}"></i><span class="nm">${p.name}</span><small>${rsTot?fmtPct(p.n/rsTot):'–'}</small><b>${fmtN(p.n)}</b></div>`).join('')}</div></div><div class="hint" style="margin-top:10px">อัตราขอคืน — orders ที่ส่งช้า ${a.late?fmtPct(lateRet/a.late):'–'} · ตรงเวลา ${(a.n-a.late)?fmtPct((rsTot-lateRet)/(a.n-a.late)):'–'}</div></div>`;
+}
+function renderGeo(m){
+  const C=groupBy('country',maskFor('country')).filter(c=>c.n).sort((a,b)=>b.n-a.n); const cities=groupBy('city',maskFor('city')).filter(c=>c.n>0).sort((a,b)=>b.n-a.n);
+  const worst=C.length?C.reduce((a,c)=>c.late/c.n>a.late/a.n?c:a):null, best=C.length?C.reduce((a,c)=>c.late/c.n<a.late/a.n?c:a):null;
+  document.getElementById('geo-mini').innerHTML=`<span>ประเทศ<b>${C.length}</b></span><span>เมือง<b>${cities.length}</b></span>${worst?`<span>ช้าสุด<b>${worst.name} ${fmtPct0(worst.late/worst.n)}</b></span><span>ดีสุด<b>${best.name} ${fmtPct0(best.late/best.n)}</b></span>`:''}`;
+  const rank=(dim,rowsAll,label)=>{ const lim=showAll[dim]?rowsAll.length:8; const rows=rowsAll.slice(0,lim); const more=rowsAll.length-rows.length;
+    return `<div class="ranklist">${rows.map((r,i)=>{const l=r.late/r.n; const selOn=hasSel(dim); return `<div class="rr${isSel(dim,r.i)?' sel':''}${selOn&&!isSel(dim,r.i)?' off':''}" data-click="${dim}:${r.i}"><i class="bg" style="width:${(r.n/rowsAll[0].n*100).toFixed(0)}%"></i><span class="i">${i+1}</span><span class="nm">${label(r)}</span><span class="n">${fmtN(r.n)}</span><span class="lr ${l>=OVERALL_LATE+.05?'hi':l<=OVERALL_LATE-.05?'lo':''}">${fmtPct0(l)}</span></div>`;}).join('')}</div>${rowsAll.length>8?`<button class="tbtn" type="button" style="margin-top:8px" data-more="${dim}">${showAll[dim]?'ย่อ':'แสดงทั้งหมด ('+rowsAll.length+')'}</button>`:''}`; };
+  const q=citySearch.trim().toLowerCase(); const cityRows=(q?cities.filter(c=>c.name.toLowerCase().includes(q)||DIMS.country[DIMS.cityCountry[c.i]].toLowerCase().includes(q)):cities).slice(0,q?30:(showAll.city?99:8));
+  const wh=groupBy('warehouse',maskFor('warehouse')).filter(w=>w.n).sort((a,b)=>b.n-a.n);
+  document.getElementById('geo-b').innerHTML=`<div class="card hue-pink"><div class="card-h"><h3>ประเทศ<span>orders · ส่งช้า</span></h3></div>${C.length?rank('country',C,c=>c.name):'<div class="hint">ไม่มีข้อมูล</div>'}</div>
+    <div class="card hue-violet"><div class="card-h"><h3>เมืองปลายทาง<span>${q?'ผลค้นหา':'อันดับ'} จาก ${cities.length}</span></h3></div><input class="search" id="citySearch" type="search" placeholder="ค้นหาเมือง / ประเทศ…" value="${citySearch.replace(/"/g,'&quot;')}">${cityRows.length?rank('city',cityRows,c=>`${c.name}<small>${DIMS.country[DIMS.cityCountry[c.i]]}</small>`):'<div class="hint">ไม่พบ</div>'}</div>
+    <div class="card hue-teal"><div class="card-h"><h3>คลังสินค้า<span>orders · ส่งช้า · ชม.ในคลัง</span></h3></div>${wh.length?rank('warehouse',wh,w=>`${w.name}<small>${(w.proc/w.n/10).toFixed(1)} ชม.</small>`):'<div class="hint">ไม่มีข้อมูล</div>'}</div>`;
+}
+function renderTime(m){
+  const mo=groupBy('month',maskFor('month'),12), dw=groupBy('dow',maskFor('dow'),7);
+  const daily=new Array(366).fill(null); for(let i=0;i<N;i++){ if(!m[i]) continue; const d=R.doy[i]; (daily[d]=daily[d]||{n:0,late:0}); daily[d].n++; daily[d].late+=R.late[i]; }
+  const dr=daily.filter(Boolean).map(d=>d.late/d.n); const lo=dr.length?Math.min(...dr):0, hi=dr.length?Math.max(...dr):1; const steps=['var(--seq1)','var(--seq2)','var(--seq3)','var(--seq4)','var(--seq5)','var(--seq6)']; const col=v=>steps[Math.max(0,Math.min(5,Math.floor((v-lo)/((hi-lo)||1)*6)))];
+  const startDow=3, weeks=Math.ceil((startDow+365)/7); let cells='',lastM=-1;
+  for(let w=0;w<weeks;w++){ const firstDoy=w*7-startDow+1; const dt=new Date(Date.UTC(2026,0,Math.max(firstDoy,1))); const mm=dt.getUTCMonth(); cells+=`<span class="ml">${mm!==lastM&&firstDoy>=-3?DIMS.month[mm]:''}</span>`; lastM=mm;
+    for(let r=0;r<7;r++){ const doy=w*7+r-startDow+1; if(doy<1||doy>365){cells+='<i class="sp"></i>';continue;} const d=daily[doy]; if(!d){cells+='<i></i>';continue;} const v=d.late/d.n; const date=new Date(Date.UTC(2026,0,doy)); cells+=`<i style="background:${col(v)}" data-tip="<b>${date.getUTCDate()} ${DIMS.month[date.getUTCMonth()]} 2026</b><br>ส่งช้า ${fmtPct(v)} · ${fmtN(d.n)} orders"></i>`; } }
+  const cal=`<div class="tscroll"><div class="cal" style="min-width:${weeks*13+40}px"><div class="dl"><span>จ.</span><span></span><span>พ.</span><span></span><span>ศ.</span><span></span><span>อา.</span></div><div class="wk">${cells}</div></div></div><div class="hscale">${fmtPct0(lo)}<span class="sw">${steps.map(s=>`<i style="background:${s}"></i>`).join('')}</span>${fmtPct0(hi)}<span style="margin-left:10px">ส่งช้ารายวัน</span></div>`;
+  const W=900,H=150,pl=48,pr=10,pt=12,pb=24,pw=W-pl-pr,ph=H-pt-pb; const maxN=Math.max(...mo.map(x=>x.n),1); const step=maxN>2000?1000:maxN>500?250:maxN>100?50:10; const top=Math.ceil(maxN/step)*step; const slot=pw/12,bw=Math.min(28,slot*.55); const y=v=>pt+ph-(v/top)*ph;
+  let s=`<svg viewBox="0 0 ${W} ${H}">`; for(let t=0;t<=top;t+=step) s+=`<line class="gl" x1="${pl}" x2="${W-pr}" y1="${y(t)}" y2="${y(t)}"/><text class="tick" x="${pl-8}" y="${y(t)+4}" text-anchor="end">${fmtN(t)}</text>`;
+  const selOn=hasSel('month'); mo.forEach((x,i)=>{ const cx=pl+slot*i+slot/2,x0=cx-bw/2,on=x.n-x.late,late=x.late; const dimmed=selOn&&!isSel('month',i); const tipS=`<b>${DIMS.month[i]}</b><br>ตรงเวลา ${fmtN(on)} · ส่งช้า ${fmtN(late)} (${x.n?fmtPct(late/x.n):'–'})<br>ยอดขาย ${fmtK(x.rev)}`;
+    s+=`<rect class="rowhit" x="${cx-slot/2}" y="${pt}" width="${slot}" height="${ph}" data-tip="${tipS}" data-click="month:${i}"/><rect x="${x0}" y="${y(on)}" width="${bw}" height="${Math.max(0,y(0)-y(on))}" fill="var(--cyan)" opacity="${dimmed?.25:.9}" data-tip="${tipS}" data-click="month:${i}" style="cursor:pointer"/>`;
+    if(late>0) s+=`<path d="M${x0},${y(on+late)+4} a4,4 0 0 1 4,-4 h${bw-8} a4,4 0 0 1 4,4 V${y(on)-2} H${x0} Z" fill="var(--pink)" opacity="${dimmed?.25:.9}" data-tip="${tipS}" data-click="month:${i}" style="cursor:pointer"/>`;
+    s+=`<text class="tick" x="${cx}" y="${H-8}" text-anchor="middle">${DIMS.month[i]}</text>`; }); s+=`<line class="base" x1="${pl}" x2="${W-pr}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  const rates=mo.filter(x=>x.n).map(x=>x.late/x.n); const rev=mo.reduce((a,x)=>a+x.rev,0); const a=total(m);
+  document.getElementById('tm-mini').innerHTML=`<span>ยอดขายรวม<b>${fmtK(rev)}</b></span>${rates.length?`<span>ส่งช้าต่ำสุด<b>${fmtPct(Math.min(...rates))}</b></span><span>สูงสุด<b>${fmtPct(Math.max(...rates))}</b></span>`:''}`;
+  document.getElementById('time-b').innerHTML=`<div class="card hue-teal" style="margin-bottom:12px"><div class="card-h"><h3>ปฏิทินส่งช้ารายวัน<span>365 วัน</span></h3></div>${cal}</div><div class="grid g3"><div class="card hue-sky" style="grid-column:span 2"><div class="card-h"><h3>Orders รายเดือน<span>ตรงเวลา / ส่งช้า</span></h3><span class="hint">คลิกเดือนเพื่อกรอง</span></div><div class="tscroll"><div style="min-width:480px">${s}</div></div><div class="legend"><span><i style="background:var(--cyan)"></i>ตรงเวลา</span><span><i style="background:var(--pink)"></i>ส่งช้า</span></div></div>${barChart('dow',dw,a.n?a.late/a.n:0,{rowH:24,labW:80,sub:'คลิกเพื่อกรอง'})}</div>`;
+}
+function renderImpact(m){
+  const byD=Array.from({length:14},()=>({n:0,rating:0,ret:0})); let on={n:0,rating:0,ret:0},la={n:0,rating:0,ret:0};
+  for(let i=0;i<N;i++){ if(!m[i]) continue; const d=R.delay[i]; byD[d].n++; byD[d].rating+=R.rating[i]; byD[d].ret+=R.ret[i]; const t=R.late[i]?la:on; t.n++; t.rating+=R.rating[i]; t.ret+=R.ret[i]; }
+  const pts=byD.map((d,i)=>({d:i,n:d.n,r:d.n?d.rating/d.n:0,ret:d.n?d.ret/d.n:0})).filter(p=>p.n>=20); const o={rating:on.n?on.rating/on.n:0,ret:on.n?on.ret/on.n:0}, l={rating:la.n?la.rating/la.n:0,ret:la.n?la.ret/la.n:0};
+  document.getElementById('im-mini').innerHTML=`<span>ตรงเวลา<b>${o.rating.toFixed(2)}★</b></span><span>ส่งช้า<b>${l.rating.toFixed(2)}★</b></span>`;
+  let svg='';
+  if(pts.length>1){ const W=520,H=170,pl=34,pr=16,pt=20,pb=24,pw=W-pl-pr,ph=H-pt-pb; const maxD=pts[pts.length-1].d||1; const x=d=>pl+d/maxD*pw,yR=v=>pt+(5-v)/4*ph; const line=pts.map((p,i)=>(i?'L':'M')+x(p.d).toFixed(1)+','+yR(p.r).toFixed(1)).join(' ');
+    svg=`<svg viewBox="0 0 ${W} ${H}">`; for(const t of [1,2,3,4,5]) svg+=`<line class="gl" x1="${pl}" x2="${W-pr}" y1="${yR(t)}" y2="${yR(t)}"/><text class="tick" x="${pl-8}" y="${yR(t)+4}" text-anchor="end">${t}★</text>`;
+    for(const p of pts) if(p.d%2===0) svg+=`<text class="tick" x="${x(p.d)}" y="${H-6}" text-anchor="middle">${p.d===0?'ตรงเวลา':'ช้า '+p.d+' วัน'}</text>`;
+    svg+=`<path d="${line} L${x(pts[pts.length-1].d)},${yR(1)} L${x(pts[0].d)},${yR(1)} Z" fill="var(--violet)" opacity=".12"/><path d="${line}" fill="none" stroke="var(--violet)" stroke-width="2.5" style="filter:drop-shadow(0 0 4px var(--violet))"/>`;
+    for(const p of pts) svg+=`<circle cx="${x(p.d)}" cy="${yR(p.r)}" r="4" fill="var(--violet)" stroke="#050b18" stroke-width="2"/><circle cx="${x(p.d)}" cy="${yR(p.r)}" r="12" fill="transparent" data-tip="<b>${p.d===0?'ตรงเวลา':'ช้า '+p.d+' วัน'}</b><br>คะแนน ${p.r.toFixed(2)} · คืน ${fmtPct(p.ret)}<br>${fmtN(p.n)} orders"/>`;
+    svg+=`<text class="val" x="${x(pts[0].d)+10}" y="${yR(pts[0].r)-10}">${pts[0].r.toFixed(2)}</text>`; if(pts[1]) svg+=`<text class="val" x="${x(pts[1].d)+10}" y="${yR(pts[1].r)+18}">${pts[1].r.toFixed(2)}</text>`; svg+='</svg>'; }
+  else svg=`<div class="hint" style="padding:30px 0;text-align:center">ข้อมูลไม่พอสำหรับกราฟนี้</div>`;
+  document.getElementById('impact-b').innerHTML=`<div class="card hue-violet"><div class="card-h"><h3>คะแนนลูกค้า<span>ตามจำนวนวันที่ช้า</span></h3></div>${svg}</div><div class="card hue-violet"><div class="card-h"><h3>ตรงเวลา vs ส่งช้า</h3></div><div class="cmp">
+      <div class="c"><span class="l">คะแนน · ตรงเวลา</span><div class="v">${o.rating.toFixed(2)}<small> / 5</small></div><div class="b"><i style="width:${(o.rating/5*100).toFixed(0)}%"></i></div></div>
+      <div class="c bad"><span class="l">คะแนน · ส่งช้า</span><div class="v">${l.rating.toFixed(2)}<small> / 5</small></div><div class="b"><i style="width:${(l.rating/5*100).toFixed(0)}%"></i></div><div class="r">ตก <b>${(o.rating-l.rating).toFixed(1)} ดาว</b></div></div>
+      <div class="c"><span class="l">ขอคืน · ตรงเวลา</span><div class="v">${fmtPct(o.ret)}</div><div class="b"><i style="width:${Math.min(100,o.ret/0.3*100).toFixed(0)}%"></i></div></div>
+      <div class="c bad"><span class="l">ขอคืน · ส่งช้า</span><div class="v">${fmtPct(l.ret)}</div><div class="b"><i style="width:${Math.min(100,l.ret/0.3*100).toFixed(0)}%"></i></div><div class="r">เพิ่ม <b>×${o.ret?(l.ret/o.ret).toFixed(1):'–'}</b></div></div></div></div>`;
+}
+
+/* ---------- events ---------- */
+const tip=document.getElementById('tip');
+document.addEventListener('mousemove',e=>{ const t=e.target.closest('[data-tip]'); if(!t){tip.hidden=true;return;} tip.innerHTML=t.dataset.tip; tip.hidden=false; const x=Math.min(Math.max(e.clientX,130),window.innerWidth-130); tip.style.left=x+'px'; tip.style.top=e.clientY+'px'; });
+document.addEventListener('mouseleave',()=>tip.hidden=true);
+document.addEventListener('click',e=>{
+  const tg=e.target.closest('[data-toggle]'); if(tg){ tableOn[tg.dataset.toggle]=!tableOn[tg.dataset.toggle]; renderAll(); return; }
+  const mr=e.target.closest('[data-more]'); if(mr){ showAll[mr.dataset.more]=!showAll[mr.dataset.more]; renderGeo(maskFor(null)); return; }
+  const rm=e.target.closest('[data-rm]'); if(rm){ const [d,i]=rm.dataset.rm.split(':'); FILT[d].delete(+i); renderAll(); return; }
+  if(e.target.id==='f-reset'){ for(const d in FILT) FILT[d].clear(); renderAll(); return; }
+  const al=e.target.closest('[data-alert]'); if(al){ const p=al.dataset.alert.split(':'); if(p[0]==='cell'){ FILT.weather=new Set([+p[1]]); FILT.method=new Set([+p[2]]); renderAll(); } else toggle(p[0],+p[1]); return; }
+  const cl=e.target.closest('[data-cell]'); if(cl){ const [w,mth]=cl.dataset.cell.split(':').map(Number); const same=isSel('weather',w)&&isSel('method',mth)&&FILT.weather.size===1&&FILT.method.size===1; FILT.weather=same?new Set():new Set([w]); FILT.method=same?new Set():new Set([mth]); renderAll(); return; }
+  const c=e.target.closest('[data-click]'); if(c){ const [d,i]=c.dataset.click.split(':'); toggle(d,+i); }
+});
+document.addEventListener('change',e=>{ if(e.target.id==='otherDim'){ otherDim=e.target.value; renderAll(); } });
+document.addEventListener('input',e=>{ if(e.target.id==='citySearch'){ citySearch=e.target.value; const pos=e.target.selectionStart; renderGeo(maskFor(null)); const inp=document.getElementById('citySearch'); inp.focus(); try{inp.setSelectionRange(pos,pos);}catch(_){} } });
+const navLinks=[...document.querySelectorAll('.nav a[href^="#"]')];
+if('IntersectionObserver' in window){ const io=new IntersectionObserver(es=>{ es.forEach(en=>{ if(en.isIntersecting) navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id)); }); },{rootMargin:'-30% 0px -60% 0px'}); document.querySelectorAll('#top,.panel.sec[id]').forEach(s=>io.observe(s)); }
+
+function renderAll(){ const m=maskFor(null); renderTop(); renderKpis(m); renderAlerts(m); renderStatus(m); renderMap(m); renderTrend(m); renderRight(m); renderFlow(m); renderDrivers(m); renderHeat(m); renderProduct(m); renderGeo(m); renderTime(m); renderImpact(m); }
+renderAll();
+</script>

@@ -1,0 +1,257 @@
+<title>Delivery Promise Brief 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --plane:#f5f6f4; --surface:#ffffff; --surface-2:#eef0ed;
+  --ink:#15171b; --ink-2:#5a5f67; --muted:#8a8f97; --grid:#e3e6e1; --ring:rgba(21,23,27,.08);
+  --blue:#2a78d6; --blue-soft:#d6e6f9; --blue-ink:#1b5cab;
+  --red:#d03b3b; --red-soft:#fbe1e1; --red-ink:#a92c2c;
+  --green:#0ca30c; --green-ink:#0a6b0a; --green-soft:#dcf3dc;
+  --amber-soft:#fff0cc; --amber-ink:#8a5d00;
+  --dot-on:#2a78d6; --dot-off:#d9dde0;
+  --pink:#e23b7a; --pink-2:#f2607a; --pink-soft:#fbdde8; --pink-ink:#b8285f;
+  --violet:#6f3ff5; --violet-2:#9a72ff; --violet-soft:#e6ddfd; --violet-ink:#5430c4;
+  --sky:#2f86f6; --sky-2:#5ec1ff; --sky-soft:#d9e9fd; --sky-ink:#1f5fbf;
+  --orange:#f5762e; --orange-2:#f7b731; --orange-soft:#fde5d2; --orange-ink:#b7500f;
+  --plane:#f7eef2;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --plane:#101214; --surface:#191b1e; --surface-2:#22252a;
+    --ink:#f2f3f1; --ink-2:#b3b7be; --muted:#7f848c; --grid:#2a2d31; --ring:rgba(255,255,255,.08);
+    --blue:#3987e5; --blue-soft:#1d3556; --blue-ink:#8fbcf2;
+    --red:#e05252; --red-soft:#4a2020; --red-ink:#f19a9a;
+    --green:#0ca30c; --green-ink:#5fd35f; --green-soft:#1d3d1d;
+    --amber-soft:#3f3212; --amber-ink:#f2c453;
+    --dot-on:#3987e5; --dot-off:#2c3036;
+    --pink:#f0558f; --pink-2:#f7788f; --pink-soft:#4a2033; --pink-ink:#ff9cc0;
+    --violet:#8c68ff; --violet-2:#b39aff; --violet-soft:#2e2450; --violet-ink:#c2adff;
+    --sky:#4a98ff; --sky-2:#7fd0ff; --sky-soft:#1c3352; --sky-ink:#8fc2ff;
+    --orange:#ff8a3d; --orange-2:#ffc54d; --orange-soft:#4a2e18; --orange-ink:#ffb27a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --plane:#101214; --surface:#191b1e; --surface-2:#22252a;
+  --ink:#f2f3f1; --ink-2:#b3b7be; --muted:#7f848c; --grid:#2a2d31; --ring:rgba(255,255,255,.08);
+  --blue:#3987e5; --blue-soft:#1d3556; --blue-ink:#8fbcf2;
+  --red:#e05252; --red-soft:#4a2020; --red-ink:#f19a9a;
+  --green:#0ca30c; --green-ink:#5fd35f; --green-soft:#1d3d1d;
+  --amber-soft:#3f3212; --amber-ink:#f2c453;
+  --dot-on:#3987e5; --dot-off:#2c3036;
+  --pink:#f0558f; --pink-2:#f7788f; --pink-soft:#4a2033; --pink-ink:#ff9cc0;
+  --violet:#8c68ff; --violet-2:#b39aff; --violet-soft:#2e2450; --violet-ink:#c2adff;
+  --sky:#4a98ff; --sky-2:#7fd0ff; --sky-soft:#1c3352; --sky-ink:#8fc2ff;
+  --orange:#ff8a3d; --orange-2:#ffc54d; --orange-soft:#4a2e18; --orange-ink:#ffb27a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding-inline:16px;padding-block:32px 64px}
+.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+h1{font-size:clamp(26px,4.2vw,38px);line-height:1.2;margin:6px 0 0;font-weight:600;letter-spacing:-.015em;text-wrap:balance;max-width:20ch}
+h1 b{background:linear-gradient(90deg,var(--pink),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+.meta{color:var(--muted);font-size:13px;margin-top:10px}
+
+section{margin-top:44px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+.sec-h .n{font-size:12px;font-weight:700;color:#fff;letter-spacing:.04em;padding:2px 9px;border-radius:999px;background:linear-gradient(135deg,var(--pink),var(--violet))}
+.sec-h:nth-of-type(1) .n{}
+h2{font-size:20px;font-weight:600;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--ink-2);font-size:14px;margin:-6px 0 14px;max-width:62ch}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;background:var(--surface);border:1px solid var(--ring);border-radius:16px;padding:26px 28px;margin-top:22px}
+.waffle{display:grid;grid-template-columns:repeat(10,16px);gap:4px}
+.waffle i{width:16px;height:16px;border-radius:4px;background:var(--dot-off);display:block}
+.waffle i.on{background:var(--pink)}
+.waffle i.on.v{background:var(--violet)}
+.hero .big{font-size:64px;font-weight:700;line-height:1;letter-spacing:-.02em;background:linear-gradient(90deg,var(--pink),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.hero .big small{font-size:20px;font-weight:500;color:var(--ink-2);margin-left:8px;letter-spacing:0}
+.hero p{margin:8px 0 0;color:var(--ink-2);max-width:40ch}
+.hero .key{display:flex;gap:16px;margin-top:14px;font-size:12.5px;color:var(--muted)}
+.hero .key i{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+.hero{border-top:4px solid transparent;border-image:linear-gradient(90deg,var(--pink),var(--violet),var(--sky),var(--orange)) 1;border-radius:16px 16px 16px 16px}
+
+/* cost tiles */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (min-width:860px){.tiles{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:480px){.tiles{grid-template-columns:1fr}}
+.tile{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:0;border-radius:14px;padding:18px 20px;box-shadow:0 8px 20px -12px var(--g1)}
+.tile.t1{--g1:var(--pink);--g2:var(--pink-2)} .tile.t2{--g1:var(--violet);--g2:var(--violet-2)} .tile.t3{--g1:var(--sky);--g2:var(--sky-2)} .tile.t4{--g1:var(--orange);--g2:var(--orange-2)}
+.tile .l{font-size:13px;color:rgba(255,255,255,.85)}
+.tile .cmp{display:flex;align-items:baseline;gap:10px;margin-top:8px;flex-wrap:wrap}
+.tile .a{font-size:30px;font-weight:600;color:rgba(255,255,255,.75)}
+.tile .arrow{color:rgba(255,255,255,.7);font-size:18px}
+.tile .b{font-size:36px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.tile .a small,.tile .b small{font-size:14px;font-weight:400;color:rgba(255,255,255,.8);margin-left:2px}
+.tile .note{font-size:12.5px;color:rgba(255,255,255,.85);margin-top:6px}
+
+
+/* cause cards */
+.causes{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:680px){.causes{grid-template-columns:repeat(2,1fr)}}
+.cause{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:18px 20px;min-width:0;border-top:4px solid var(--acc)}
+.hue-violet{--acc:var(--violet);--acc-soft:var(--violet-soft);--acc-ink:var(--violet-ink)} .hue-pink{--acc:var(--pink);--acc-soft:var(--pink-soft);--acc-ink:var(--pink-ink)} .hue-sky{--acc:var(--sky);--acc-soft:var(--sky-soft);--acc-ink:var(--sky-ink)} .hue-orange{--acc:var(--orange);--acc-soft:var(--orange-soft);--acc-ink:var(--orange-ink)}
+.cause .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:8px}
+.tag.no{background:var(--surface-2);color:var(--ink-2)}
+.tag.yes{background:var(--acc-soft);color:var(--acc-ink)}
+.cause h3{font-size:16px;font-weight:600;margin:0 0 2px;line-height:1.35;text-wrap:balance}
+.cause p{margin:0 0 12px;font-size:13.5px;color:var(--ink-2)}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:inherit;font-size:13px;fill:var(--ink-2)}
+svg .cat{fill:var(--ink)}
+svg .val{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+svg .val.soft{fill:var(--ink-2);font-weight:500}
+svg .tick{fill:var(--muted);font-size:11px}
+svg .bar{fill:var(--acc)} svg .bar.dim{fill:var(--acc-soft)}
+svg .base{stroke:var(--grid);stroke-width:1}
+svg .promise{fill:var(--surface);stroke:var(--acc);stroke-width:2}
+svg .actual{fill:var(--acc)}
+svg .gap{stroke:var(--acc-soft);stroke-width:4;stroke-linecap:round}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-2);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:5px}
+.legend i.sq{border-radius:2px}
+
+/* options */
+.opts{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:680px){.opts{grid-template-columns:repeat(2,1fr)}}
+.opt{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.opt::before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--acc),var(--acc-2))}
+.opt.lead{box-shadow:0 0 0 2px var(--acc) inset}
+.opt.lead .id::after{content:' · แนะนำเริ่มก่อน'}
+.hue-violet{--acc-2:var(--violet-2)} .hue-pink{--acc-2:var(--pink-2)} .hue-sky{--acc-2:var(--sky-2)} .hue-orange{--acc-2:var(--orange-2)}
+.opt .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.opt .id{font-size:12px;font-weight:600;color:var(--acc-ink);letter-spacing:.06em}
+.opt .owner{font-size:11.5px;color:var(--acc-ink);background:var(--acc-soft);padding:2px 9px;border-radius:999px;white-space:nowrap}
+.opt h3{font-size:17px;font-weight:600;margin:0;line-height:1.35;text-wrap:balance}
+.opt .do{font-size:13.5px;color:var(--ink-2);margin:0}
+.opt .after{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px}
+.opt .after div{background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.opt .after .k{font-size:11.5px;color:var(--muted)}
+.opt .after .v{font-size:24px;font-weight:700;line-height:1.1;margin-top:2px;letter-spacing:-.01em}
+.opt .after .v small{font-size:12px;font-weight:400;color:var(--muted)}
+.opt .after .v.g{color:var(--acc-ink)}
+.opt .bar{height:10px;border-radius:5px;background:var(--surface-2);position:relative;overflow:hidden;margin-top:2px}
+.opt .bar i{position:absolute;left:0;top:0;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--acc),var(--acc-2))}
+.opt .bar b{position:absolute;top:0;height:100%;border-left:2px dashed var(--ink);opacity:.5}
+.opt .tradeoff{font-size:12.5px;color:var(--amber-ink);background:var(--amber-soft);padding:6px 10px;border-radius:8px;margin-top:auto}
+
+.flat{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-size:14px;color:var(--ink-2)}
+.flat span.pill{background:var(--surface-2);color:var(--ink);padding:3px 10px;border-radius:999px;font-size:13px}
+.flat .pill:nth-of-type(6n+1){background:var(--pink-soft);color:var(--pink-ink)} .flat .pill:nth-of-type(6n+2){background:var(--violet-soft);color:var(--violet-ink)} .flat .pill:nth-of-type(6n+3){background:var(--sky-soft);color:var(--sky-ink)} .flat .pill:nth-of-type(6n+4){background:var(--orange-soft);color:var(--orange-ink)} .flat .pill:nth-of-type(6n+5){background:var(--pink-soft);color:var(--pink-ink)} .flat .pill:nth-of-type(6n+6){background:var(--violet-soft);color:var(--violet-ink)}
+
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--grid);font-size:12.5px;color:var(--muted);line-height:1.6}
+.foot a{color:var(--blue)}
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr}
+  .waffle{grid-template-columns:repeat(10,1fr)}.waffle i{width:auto;aspect-ratio:1}
+  .hero .big{font-size:52px}
+}
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Delivery brief · ปี 2026 · 50,000 orders</div>
+  <h1>ลูกค้า <b>56 ใน 100 คน</b> ได้ของช้ากว่าที่เราสัญญาไว้</h1>
+  <div class="meta">ข้อมูลจัดส่งทั้งปี ม.ค.–ธ.ค. 2026 · อ่านจบใน 5 นาที</div>
+
+  <div class="hero">
+    <div>
+      <div class="big">56.3%<small>ส่งช้ากว่ากำหนด</small></div>
+      <p>28,162 จาก 50,000 orders ถึงมือลูกค้าหลังวันที่เราสัญญา — และ <b>เกือบครึ่งช้าแค่ 1 วัน</b> (43%) แต่ลูกค้าไม่ได้ให้อภัยเพราะช้าน้อย</p>
+      <div class="key"><span><i style="background:linear-gradient(90deg,var(--pink),var(--violet))"></i>ส่งช้า</span><span><i style="background:var(--dot-off)"></i>ตรงเวลา</span><span>1 ช่อง = 1 ใน 100 orders</span></div>
+    </div>
+    <div class="waffle" id="waffle" aria-label="56 จาก 100 orders ส่งช้า"></div>
+  </div>
+
+  <section>
+    <div class="sec-h"><span class="n">01</span><h2>การส่งช้าทำให้เราเสียอะไร</h2></div>
+    <p class="sub">เทียบลูกค้าที่ได้ของตรงเวลา กับลูกค้าที่ได้ของช้า</p>
+    <div class="tiles">
+      <div class="tile t1"><div class="l">คะแนนรีวิวเฉลี่ย</div><div class="cmp"><span class="a">4.2<small>★</small></span><span class="arrow">→</span><span class="b">2.7<small>★</small></span></div><div class="note">ตกทันทีที่ช้า 1 วัน — ช้ากว่านั้นคะแนนก็ไม่ต่างกัน</div></div>
+      <div class="tile t2"><div class="l">ลูกค้าที่ให้ 1–2 ดาว</div><div class="cmp"><span class="a">0.2%</span><span class="arrow">→</span><span class="b">37%</span></div><div class="note">ลูกค้าไม่พอใจเกิดจากการส่งช้าแทบทั้งหมด</div></div>
+      <div class="tile t3"><div class="l">ขอคืนสินค้า</div><div class="cmp"><span class="a">9.4%</span><span class="arrow">→</span><span class="b">23.3%</span></div><div class="note">เพิ่ม 2.5 เท่า ในทุกเหตุผลการคืน ไม่ใช่แค่ "ส่งช้า"</div></div>
+      <div class="tile t4"><div class="l">ยอดขายที่ถูกขอคืนเพิ่ม (ประมาณการ)</div><div class="cmp"><span class="b">≈ $700K<small>/ปี</small></span></div><div class="note">≈ 3,900 คำขอคืนส่วนเกิน × มูลค่าเฉลี่ย $178 · ยังไม่รวมลูกค้าที่ไม่กลับมาซื้อซ้ำ</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="n">02</span><h2>ทำไมถึงช้า — และเราแก้ตรงไหนได้</h2></div>
+    <div class="causes">
+      <div class="cause hue-violet"><span class="tag no">ควบคุมไม่ได้</span><h3>ฝนตก หิมะ พายุ</h3><p>วันที่มีพายุ/หิมะ ส่งช้า 9 ใน 10 orders — คิดเป็น 1 ใน 3 ของ orders ที่ช้าทั้งหมด</p><div id="c-weather"></div></div>
+      <div class="cause hue-pink"><span class="tag yes">ควบคุมได้</span><h3>เราสัญญาสั้นกว่าที่ทำได้จริง</h3><p>ทุกวิธีจัดส่ง ของถึงช้ากว่าที่สัญญาเฉลี่ย 0.3–1.9 วัน — ถ้าสัญญาเพิ่มอีก 1 วัน "ส่งช้า" จะหายไปมากกว่าครึ่ง</p><div id="c-promise"></div><div class="legend"><span><i style="background:var(--surface);outline:2px solid var(--acc);outline-offset:-2px"></i>วันที่สัญญา</span><span><i style="background:var(--acc)"></i>วันที่ถึงจริง</span></div></div>
+      <div class="cause hue-sky"><span class="tag yes">ควบคุมได้</span><h3>บริษัทขนส่งบางเจ้าช้ากว่าเจ้าอื่นมาก</h3><p>ราคาเท่ากันทุกเจ้า (~$120/order) แต่ผลต่างกันเกือบ 20 จุด</p><div id="c-carrier"></div></div>
+      <div class="cause hue-orange"><span class="tag yes">ควบคุมได้</span><h3>ออเดอร์ "Low priority" ค้างในคลังนาน</h3><p>ใช้เวลาในคลังเฉลี่ย 26 ชม. (Urgent 4.5 ชม.) ทั้งที่สัญญาลูกค้าเท่ากัน — 82% เลยถึงช้า</p><div id="c-priority"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="n">03</span><h2>ทางเลือกที่ต้องตัดสินใจ</h2></div>
+    <p class="sub">ตัวเลข "หลังทำ" คำนวณจากข้อมูลจริงปี 2026 · เงินที่ประหยัด = orders ที่ไม่ช้าแล้ว × ยอดขอคืนส่วนเกิน $24.8/order · ทำหลายข้อพร้อมกันได้</p>
+    <div class="opts" id="opts"></div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="n">04</span><h2>สิ่งที่ไม่ต้องกังวล</h2></div>
+    <div class="flat">ส่งช้าเท่ากันหมด (ต่างกันไม่เกิน 3 จุด) ไม่ว่าจะเป็น <span class="pill">คลังสินค้าไหน</span><span class="pill">สินค้าหมวดไหน</span><span class="pill">ลูกค้ากลุ่มไหน</span><span class="pill">พัสดุขนาดไหน</span><span class="pill">จ่ายเงินแบบไหน</span><span class="pill">เดือนไหน</span> — ไม่ต้องเสียเวลาไล่ดูรายจุด</div>
+  </section>
+
+  <div class="foot">
+    ที่มา: Kaggle · datascikhan/e-commerce-delivery-and-shipping-data-2026 (ข้อมูลจำลอง) · "ส่งช้า" = วันที่ถึงจริง &gt; วันที่สัญญา · ประมาณการเงินตั้งอยู่บนสมมติฐานว่าอัตราขอคืนตามสถานะ "ช้า/ไม่ช้า" ที่ลูกค้ารับรู้<br>
+    ต้องการดูรายละเอียดและกรองข้อมูลเอง: <a href="https://claude.ai/artifact/4XYyn64wJcTZhSa5X16sq2">Late Delivery Drivers 2026 (dashboard ฉบับเต็ม)</a>
+  </div>
+</div>
+
+<script>
+/* waffle */
+document.getElementById('waffle').innerHTML = Array.from({length:100},(_,i)=>`<i class="${i<56?(i%10<5?'on':'on v'):''}"></i>`).join('');
+
+/* helpers */
+function hbars(items,{W=440,labW=110,rowH=30,max=1,fmt=v=>Math.round(v*100)+'%',hi=null,unit=''}={}){
+  const valW=60,padT=4,padB=4,H=padT+items.length*rowH+padB,plotW=W-labW-valW;
+  const xs=v=>labW+v/max*plotW; const top=hi??Math.max(...items.map(i=>i.v));
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  items.forEach((it,i)=>{const y=padT+i*rowH+5,bh=rowH-10,w=Math.max(0,it.v/max*plotW),r=Math.min(5,bh/2);const on=it.v===top;
+    s+=`<text class="cat" x="${labW-10}" y="${y+bh/2+4.5}" text-anchor="end">${it.name}</text>`;
+    s+=`<path class="bar${on?'':' dim'}" d="M${labW},${y} H${labW+Math.max(w-r,0)} a${r},${r} 0 0 1 ${r},${r} V${y+bh-r} a${r},${r} 0 0 1 -${r},${r} H${labW} Z"/>`;
+    s+=`<text class="val${on?'':' soft'}" x="${labW+w+8}" y="${y+bh/2+4.5}">${fmt(it.v)}${unit}</text>`;});
+  s+=`<line class="base" x1="${labW}" x2="${labW}" y1="${padT}" y2="${H-padB}"/></svg>`; return s;
+}
+document.getElementById('c-weather').innerHTML = hbars([
+  {name:'หิมะ',v:.935},{name:'พายุ',v:.910},{name:'ฝน',v:.666},{name:'ร้อนจัด',v:.564},{name:'มีเมฆ',v:.459},{name:'ฟ้าใส',v:.350}]);
+document.getElementById('c-carrier').innerHTML = hbars([
+  {name:'GlobalExpress',v:.658},{name:'PrimeDelivery',v:.615},{name:'BlueRoute',v:.610},{name:'FastTrack',v:.566},{name:'EagleCourier',v:.549},{name:'ParcelPro',v:.521},{name:'SpeedyCargo',v:.515},{name:'SwiftShip',v:.473}],{rowH:26});
+document.getElementById('c-priority').innerHTML = hbars([
+  {name:'Low',v:26.5},{name:'Normal',v:16.6},{name:'High',v:8.5},{name:'Urgent',v:4.5}],{max:30,fmt:v=>v.toFixed(1),unit:' ชม.'});
+
+/* promise vs actual dumbbell */
+(function(){
+  const rows=[{name:'Same Day',p:1.1,a:1.4},{name:'Express',p:3.0,a:3.6},{name:'Standard',p:5.4,a:6.3},{name:'Economy',p:9.3,a:10.6},{name:'International',p:11.6,a:13.5}];
+  const W=440,labW=110,rowH=32,padT=6,padB=22,max=15,plotW=W-labW-70,H=padT+rows.length*rowH+padB; const xs=v=>labW+v/max*plotW;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  for(const t of [0,5,10,15]) s+=`<line class="base" x1="${xs(t)}" x2="${xs(t)}" y1="${padT}" y2="${H-padB+4}"/><text class="tick" x="${xs(t)}" y="${H-4}" text-anchor="middle">${t} วัน</text>`;
+  rows.forEach((r,i)=>{const y=padT+i*rowH+rowH/2;
+    s+=`<text class="cat" x="${labW-10}" y="${y+4.5}" text-anchor="end">${r.name}</text>`;
+    s+=`<line class="gap" x1="${xs(r.p)}" x2="${xs(r.a)}" y1="${y}" y2="${y}"/>`;
+    s+=`<circle class="promise" cx="${xs(r.p)}" cy="${y}" r="6"/><circle class="actual" cx="${xs(r.a)}" cy="${y}" r="6"/>`;
+    s+=`<text class="val" x="${xs(r.a)+12}" y="${y+4.5}">+${(r.a-r.p).toFixed(1)}</text>`;});
+  s+='</svg>'; document.getElementById('c-promise').innerHTML=s;
+})();
+
+/* options */
+const BASE=0.563, PER=24.8;
+const opts=[
+  {id:'ทางเลือก A',hue:'pink',lead:true,owner:'Marcom + Product',title:'บวกวันสัญญาเพิ่ม 1 วัน ทุกวิธีจัดส่ง',do:'เปลี่ยนสิ่งที่บอกลูกค้าหน้าเว็บ/อีเมล ให้ตรงกับที่ทำได้จริง — ไม่ต้องแก้ operations',after:.318,saved:12246,trade:'ต้องทดสอบว่าโชว์ "ถึงใน 6 วัน" แทน "5 วัน" กระทบยอดสั่งซื้อแค่ไหน'},
+  {id:'ทางเลือก B',hue:'sky',owner:'Operations',title:'ย้ายงานจาก 3 ขนส่งที่ช้าสุด ไป SwiftShip',do:'GlobalExpress, PrimeDelivery, BlueRoute (38% ของ orders) → ราคาเท่าเดิม',after:.504,saved:2985,trade:'ขึ้นกับ capacity ของ SwiftShip · ถ้าย้ายทุกเจ้าได้ ลดเหลือ 47%'},
+  {id:'ทางเลือก C',hue:'violet',owner:'Ops + Marcom',title:'ช่วงพายุ/หิมะ บวกวันสัญญา +2 และแจ้งลูกค้าล่วงหน้า',do:'ปรับวันสัญญาอัตโนมัติตามพยากรณ์อากาศ + ส่งข้อความ "อาจถึงช้าเพราะสภาพอากาศ" ก่อนลูกค้าถาม',after:.478,saved:4265,trade:'ต้องเชื่อมข้อมูลพยากรณ์อากาศกับระบบสั่งซื้อ'},
+  {id:'ทางเลือก D',hue:'orange',owner:'Warehouse',title:'เร่งออเดอร์ Low priority ในคลังให้เท่า Normal',do:'ลดเวลาค้างในคลังจาก 26 ชม. เหลือ 17 ชม. หรือไม่ก็บอกลูกค้าตรง ๆ ว่ากลุ่มนี้ใช้เวลานานกว่า',after:.535,saved:1387,trade:'ต้องเพิ่มกำลังคนในคลัง หรือยอมให้ Low priority สัญญายาวขึ้น'},
+];
+document.getElementById('opts').innerHTML=opts.map(o=>`<div class="opt hue-${o.hue}${o.lead?' lead':''}">
+  <div class="top"><span class="id">${o.id}</span><span class="owner">${o.owner}</span></div>
+  <h3>${o.title}</h3><p class="do">${o.do}</p>
+  <div class="after"><div><div class="k">ส่งช้า หลังทำ</div><div class="v g">${Math.round(o.after*100)}%<small> จาก 56%</small></div></div><div><div class="k">ประหยัดยอดขอคืน</div><div class="v">≈ $${Math.round(o.saved*PER/1000)}K<small>/ปี</small></div></div></div>
+  <div class="bar"><i style="width:${(o.after*100).toFixed(0)}%"></i><b style="left:${(BASE*100).toFixed(0)}%"></b></div>
+  <div class="tradeoff">⚠ ${o.trade}</div></div>`).join('');
+</script>
